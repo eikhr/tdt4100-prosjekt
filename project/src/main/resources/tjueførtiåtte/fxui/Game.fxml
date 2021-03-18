@@ -7,8 +7,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
-<AnchorPane prefHeight="600.0" prefWidth="480.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/15.0.1" fx:controller="tjueførtiåtte.fxui.GameController">
+<AnchorPane prefHeight="600.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tjueførtiåtte.fxui.GameController">
    <children>
       <GridPane prefHeight="600.0" prefWidth="480.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -27,7 +26,7 @@
                   <Button layoutX="14.0" layoutY="47.0" mnemonicParsing="false" prefWidth="70.0" text="Venstre" />
                </children>
             </Pane>
-            <Pane GridPane.rowIndex="1" />
+            <Pane fx:id="gamePane" focusTraversable="true" onKeyPressed="#keyPressed" onMouseClicked="#gameClicked" GridPane.rowIndex="1" />
          </children>
       </GridPane>
    </children>
