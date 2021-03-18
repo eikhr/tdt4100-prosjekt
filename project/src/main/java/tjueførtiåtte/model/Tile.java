@@ -1,35 +1,39 @@
 package tjueførtiåtte.model;
 
 public class Tile {
-	private int value;
+	private int tier;
 	
-	public Tile(int value) {
-		this.validateValue(value);
-		this.value = value;
+	public Tile(int tier) {
+		this.validateTier(tier);
+		this.tier = tier;
 	}
 
-	private void validateValue(int value) {
-		if (value < 1) {
-			throw new IllegalArgumentException("Tile value must be at least 1 (displays as 2)");
+	private void validateTier(int tier) {
+		if (tier < 1) {
+			throw new IllegalArgumentException("Tile tier must be at least 1 (displays as 2)");
 		}
-		if (value > 11) {
-			throw new IllegalArgumentException("Tile value cannot be larger than 11 (displays as 2048)");
+		if (tier > 11) {
+			throw new IllegalArgumentException("Tile tier cannot be larger than 11 (displays as 2048)");
 		}
+	}
+	
+	public int getTier() {
+		return tier;
 	}
 	
 	public int getValue() {
-		return value;
+		return (int) Math.pow(2, tier);
 	}
 	
-	public String getDisplayValue() {
-		return String.valueOf((int) Math.pow(2, value));
+	public String getDisplayText() {
+		return String.valueOf(getValue());
 	}
 	
 	public void increaseValue() {
-		value++;
+		tier++;
 	}
 	
 	public boolean canMergeWith(Tile other) {
-		return value == other.getValue();
+		return tier == other.getTier();
 	}
 }

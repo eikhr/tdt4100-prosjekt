@@ -14,6 +14,28 @@ public class Board {
 		return tiles[y][x];
 	}
 	
+	public Tile[] getRow(int y) {
+		return tiles[y];
+	}
+	
+	public void setRow(int y, Tile[] row) {
+		tiles[y] = row;
+	}
+	
+	public Tile[] getCol(int x) {
+		Tile col[] = new Tile[getHeight()];
+		for (int i = 0; i < tiles.length; i++) {
+			col[i] = tiles[i][x];
+		}
+		return col;
+	}
+	
+	public void setCol(int x, Tile[] col) {
+		for (int i = 0; i < col.length; i++) {
+			tiles[i][x] = col[i];
+		}
+	}
+	
 	public boolean isEmptyTile(int x, int y) {
 		return tiles[y][x] == null;
 	}
@@ -71,7 +93,7 @@ public class Board {
 		String result = "---------------------\n";
 		for (Tile[] row : tiles) {
 			for (Tile tile : row) {
-				result += String.format("|%1$4s", tile != null ? tile.getDisplayValue() : "");
+				result += String.format("|%1$4s", tile != null ? tile.getDisplayText() : "");
 			}
 			result += "|\n---------------------\n";
 		}
