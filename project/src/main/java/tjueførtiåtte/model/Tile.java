@@ -1,4 +1,4 @@
-package tjueførtiåtte;
+package tjueførtiåtte.model;
 
 public class Tile {
 	private int value;

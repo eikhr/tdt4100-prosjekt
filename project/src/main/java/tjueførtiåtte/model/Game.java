@@ -1,4 +1,4 @@
-package tjueførtiåtte;
+package tjueførtiåtte.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,6 +38,8 @@ public class Game {
 		if (hasMoved) {
 			// after moving we add a new tile
 			addRandomTile();
+		} else {
+			System.out.println("didn't move");
 		}
 	}
 	
@@ -183,14 +185,16 @@ public class Game {
 		game.move(Direction.DOWN);
 		
 		System.out.println(game.toString());
-
-		game.move(Direction.LEFT);
 		
-		System.out.println(game.toString());
-
-		game.move(Direction.RIGHT);
-		
-		System.out.println(game.toString());
+		for (int i = 0; i < 5; i++) {
+			game.move(Direction.DOWN);
+			
+			System.out.println(game.toString());
+	
+			game.move(Direction.RIGHT);
+			
+			System.out.println(game.toString());
+		}
 	}
 
 }
