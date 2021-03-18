@@ -59,7 +59,7 @@ public class Board {
 		List<int[]> emptyPositions = new ArrayList<int[]>();
 		for (int x = 0; x < getWidth(); x++) {
 			for (int y = 0; y < getHeight(); y++) {
-				if (tiles[x][y] == null) {
+				if (tiles[y][x] == null) {
 					int pos[] = {x,y};
 					emptyPositions.add(pos);
 				}
