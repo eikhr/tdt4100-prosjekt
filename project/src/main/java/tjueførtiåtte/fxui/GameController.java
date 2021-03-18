@@ -1,6 +1,7 @@
 package tjueførtiåtte.fxui;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -11,6 +12,8 @@ public class GameController {
 	private Game game;
 	
 	@FXML Pane gamePane;
+	
+	@FXML Label scoreText;
 	
 	@FXML
 	private void initialize() {
@@ -24,21 +27,25 @@ public class GameController {
 		case W:
 			game.move(Direction.UP);
 			keyEvt.consume();
+			updateUI();
 			break;
 		case DOWN:
 		case S:
 			game.move(Direction.DOWN);
 			keyEvt.consume();
+			updateUI();
 			break;
 		case LEFT:
 		case A:
 			game.move(Direction.LEFT);
 			keyEvt.consume();
+			updateUI();
 			break;
 		case RIGHT:
 		case D:
 			game.move(Direction.RIGHT);
 			keyEvt.consume();
+			updateUI();
 			break;
 		default:
 			break;
@@ -50,4 +57,7 @@ public class GameController {
 		gamePane.requestFocus();
 	}
 	
+	private void updateUI() {
+		scoreText.setText(String.valueOf(game.getScore()));
+	}
 }

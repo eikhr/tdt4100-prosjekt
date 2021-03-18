@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tjueførtiåtte.fxui.GameController">
+<AnchorPane prefHeight="600.0" prefWidth="480.0" style="-fx-background-color: #FAF8EF;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tjueførtiåtte.fxui.GameController">
    <children>
       <GridPane prefHeight="600.0" prefWidth="480.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -20,13 +22,31 @@
          <children>
             <Pane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <Button layoutX="56.0" layoutY="14.0" mnemonicParsing="false" prefWidth="70.0" text="Opp" />
-                  <Button layoutX="56.0" layoutY="79.0" mnemonicParsing="false" prefWidth="70.0" text="Ned" />
-                  <Button layoutX="97.0" layoutY="47.0" mnemonicParsing="false" prefWidth="70.0" text="Høyre" />
-                  <Button layoutX="14.0" layoutY="47.0" mnemonicParsing="false" prefWidth="70.0" text="Venstre" />
+                  <Label layoutX="32.0" layoutY="29.0" text="2048" textFill="#766e65">
+                     <font>
+                        <Font name="System Bold" size="50.0" />
+                     </font>
+                  </Label>
+                  <Pane layoutX="339.0" layoutY="23.0" prefHeight="56.0" prefWidth="119.0" style="-fx-background-color: #BBAC9F; -fx-background-radius: 5;">
+                     <children>
+                        <Label layoutX="36.0" layoutY="6.0" text="SCORE" textFill="#e4e4e4">
+                           <font>
+                              <Font name="Arial" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="scoreText" alignment="CENTER" layoutX="4.0" layoutY="23.0" prefHeight="29.0" prefWidth="112.0" text="000" textFill="WHITE">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
                </children>
             </Pane>
-            <Pane fx:id="gamePane" focusTraversable="true" onKeyPressed="#keyPressed" onMouseClicked="#gameClicked" GridPane.rowIndex="1" />
+            <Pane fx:id="gamePane" focusTraversable="true" onKeyPressed="#keyPressed" onMouseClicked="#gameClicked" style="-fx-background-color: #BBAC9F; -fx-background-radius: 20;" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </GridPane.margin></Pane>
          </children>
       </GridPane>
    </children>

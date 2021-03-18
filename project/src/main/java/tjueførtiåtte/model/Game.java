@@ -14,6 +14,10 @@ public class Game {
 		addRandomTile();
 	}
 	
+	public int getScore() {
+		return score;
+	}
+	
 	public void move(Direction direction) {
 		
 
