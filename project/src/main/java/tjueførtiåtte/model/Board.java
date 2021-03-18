@@ -76,6 +76,34 @@ public class Board {
 		}
 	}
 	
+	public Tile getBestTile() {
+		Tile best = null;
+		for (int x = 0; x < getWidth(); x++) {
+			for (int y = 0; y < getHeight(); y++) {
+				if (best == null || tiles[y][x].getValue() > best.getValue()) {
+					best = tiles[x][y];
+				}
+			}
+		}
+		return best;
+	}
+	
+	public int getNumberOfTiles() {
+		int number = 0;
+		for (int x = 0; x < getWidth(); x++) {
+			for (int y = 0; y < getHeight(); y++) {
+				if (tiles[y][x] != null) {
+					number++;;
+				}
+			}
+		}
+		return number;
+	}
+	
+	public int getNumberOfEmptyPositions() {
+		return getHeight()*getWidth() - getNumberOfTiles();
+	}
+	
 	public List<int[]> getEmptyPositions() {
 		List<int[]> emptyPositions = new ArrayList<int[]>();
 		for (int x = 0; x < getWidth(); x++) {

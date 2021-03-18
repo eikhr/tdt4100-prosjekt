@@ -18,6 +18,26 @@ public class Game {
 		return score;
 	}
 	
+	public Tile getTile(int x, int y) {
+		return board.getTile(x, y);
+	}
+	
+	public int getNumberOfTiles() {
+		return board.getNumberOfTiles();
+	}
+	
+	public boolean boardPositionHasTile(int x, int y) {
+		return !board.isEmptyTile(x, y);
+	}
+	
+	public int getBoardWidth() {
+		return board.getWidth();
+	}
+	
+	public int getBoardHeight() {
+		return board.getHeight();
+	}
+	
 	public void move(Direction direction) {
 		
 
