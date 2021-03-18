@@ -10,13 +10,31 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import tjueførtiåtte.model.Direction;
 import tjueførtiåtte.model.Game;
 import tjueførtiåtte.model.Tile;
 
 public class GameController {
+	
+	private static String tileColors[] = new String[] {
+		"#000000",
+		"#eee4da",
+		"#eee1c9",
+		"#f3b27a",
+		"#f69664",
+		"#f77c5f",
+		"#f75f3b",
+		"#edd073",
+		"#edcc62",
+		"#edc950",
+		"#edc53f",
+		"#edc22e",
+		"#3c3a33",
+		"#1b2528",
+		"#171b70"
+	};
+	
 	private Game game;
 	
 	@FXML Pane gamePane;
@@ -97,19 +115,21 @@ public class GameController {
 		// create all tiles
 		for (int x = 0; x < game.getBoardWidth(); x++) {
 			for (int y = 0; y < game.getBoardHeight(); y++) {
+				double xPos = (x+1)*padding + x*tileSize;
+				double yPos = (y+1)*padding + y*tileSize;
 				if (game.boardPositionHasTile(x, y)) {
 					Tile tile = game.getTile(x, y);
 					
-					double xPos = (x+1)*padding + x*tileSize;
-					double yPos = (y+1)*padding + y*tileSize;
-					
 					String text = String.valueOf(tile.getValue());
 					
-					System.out.print(xPos);
-					System.out.println(yPos);
+					String color = tileColors[tile.getTier()];
 					
-					Label tileLabel = generateTile(xPos, yPos, tileSize, text, "#123456", false);
+					boolean darkText = tile.getTier() < 3;
+					
+					Label tileLabel = generateTile(xPos, yPos, tileSize, text, color, darkText);
 					tiles.add(tileLabel);
+				} else {
+					tiles.add(generateTile(xPos, yPos, tileSize, "", "#CCC1B3", false));
 				}
 			}
 		}
