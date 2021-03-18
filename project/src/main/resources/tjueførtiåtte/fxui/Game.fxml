@@ -43,17 +43,10 @@
                   </Pane>
                </children>
             </Pane>
-            <Pane fx:id="gamePane" focusTraversable="true" onKeyPressed="#keyPressed" onMouseClicked="#gameClicked" style="-fx-background-color: #BBAC9F; -fx-background-radius: 20;" GridPane.rowIndex="1">
+            <Pane fx:id="gamePane" focusTraversable="true" onKeyPressed="#keyPressed" onMouseClicked="#gameClicked" style="-fx-background-color: #BBAC9F; -fx-background-radius: 15;" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-               </GridPane.margin>
-               <children>
-                  <Label alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: yellow; -fx-background-radius: 10;" text="64">
-                     <font>
-                        <Font size="31.0" />
-                     </font>
-                  </Label>
-               </children></Pane>
+               </GridPane.margin></Pane>
          </children>
       </GridPane>
    </children>
