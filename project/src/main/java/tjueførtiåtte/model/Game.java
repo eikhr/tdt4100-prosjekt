@@ -1,7 +1,5 @@
 package tjueførtiåtte.model;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -196,12 +194,4 @@ public class Game {
 			System.out.println(game.toString());
 		}
 	}
-
 }
-
-enum Direction {
-	  UP,
-	  DOWN,
-	  LEFT,
-	  RIGHT
-	}
