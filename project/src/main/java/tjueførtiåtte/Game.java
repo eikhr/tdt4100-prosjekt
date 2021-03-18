@@ -16,23 +16,29 @@ public class Game {
 	}
 	
 	public void move(Direction direction) {
+		boolean hasMoved = false;
+		
 		// when looking right or down, we need to reverse lookup order so that the tiles closest to the edge will move there first
 		if (direction == Direction.DOWN || direction == Direction.RIGHT) {
 			for (int x = board.getWidth()-1; x >=0; x--) {
 				for (int y = board.getHeight()-1; y >= 0; y--) {
-					attemptMoveTile(x, y, direction);
+					boolean didMove = attemptMoveTile(x, y, direction);
+					hasMoved = hasMoved || didMove;
 				}
 			}
 		} else {
 			for (int x = 0; x < board.getWidth(); x++) {
 				for (int y = 0; y < board.getHeight(); y++) {
-					attemptMoveTile(x, y, direction);
+					boolean didMove = attemptMoveTile(x, y, direction);
+					hasMoved = hasMoved || didMove;
 				}
 			}
 		}
 		
-		// after moving we add a new tile
-		addRandomTile();
+		if (hasMoved) {
+			// after moving we add a new tile
+			addRandomTile();
+		}
 	}
 	
 	// adds a random tile in a random empty spot
@@ -62,9 +68,10 @@ public class Game {
 	}
 	
 	// If there is a tile in the location, move it as far to the specified location as possible and attempt merge on collision
-	private void attemptMoveTile(int x, int y, Direction direction) {
+	// return true if a tile moved
+	private boolean attemptMoveTile(int x, int y, Direction direction) {
 		if (board.isEmptyTile(x, y)) {
-			return;
+			return false;
 		}
 		
 		Tile tile = board.getTile(x, y);
@@ -103,7 +110,9 @@ public class Game {
 			int newY = newPos[1];
 			
 			moveFromTo(x, y, newX, newY);
+			return true;
 		}
+		return false;
 	}
 	
 	// moves the tile at position x,y to empty position toX,toY
