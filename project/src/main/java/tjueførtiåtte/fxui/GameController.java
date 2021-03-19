@@ -144,7 +144,7 @@ public class GameController {
 	private Label generateTile(double posX, double posY, double size, String text, String color, boolean darkText) {
 		Label tile = new Label();
 		tile.setText(text);
-		tile.setFont(new Font(30));
+		tile.setFont(new Font(40));
 		tile.setTextFill(darkText ? Color.BLACK : Color.WHITE);
 		tile.setAlignment(Pos.CENTER);
 		tile.setLayoutX(posX);
