@@ -196,45 +196,4 @@ public class Game {
 	public String toString() {
 		return board.toString();
 	}
-	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Tile tile = new Tile(1);
-
-		System.out.println(tile.getDisplayText());
-		
-		tile.increaseValue();
-
-		System.out.println(tile.getDisplayText());
-		
-		Tile tile2 = new Tile(1);
-		
-		System.out.println(tile.canMergeWith(tile2));
-		
-		tile2.increaseValue();
-
-		System.out.println(tile.canMergeWith(tile2));
-		
-		Game game = new Game();
-		
-		System.out.println(game.toString());
-		
-		game.move(Direction.UP);
-		
-		System.out.println(game.toString());
-
-		game.move(Direction.DOWN);
-		
-		System.out.println(game.toString());
-		
-		for (int i = 0; i < 5; i++) {
-			game.move(Direction.DOWN);
-			
-			System.out.println(game.toString());
-	
-			game.move(Direction.RIGHT);
-			
-			System.out.println(game.toString());
-		}
-	}
 }
