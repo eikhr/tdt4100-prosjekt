@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -22,12 +23,12 @@
          <children>
             <AnchorPane prefHeight="30.0" prefWidth="480.0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                <children>
-                  <Label layoutX="20.0" layoutY="29.0" text="2048" textFill="#766e65" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="40.0">
+                  <Label layoutX="20.0" layoutY="29.0" text="2048" textFill="#766e65" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="30.0">
                      <font>
-                        <Font name="System Bold" size="50.0" />
+                        <Font name="System Bold" size="55.0" />
                      </font>
                   </Label>
-                  <Pane layoutX="347.0" layoutY="16.0" prefHeight="56.0" prefWidth="119.0" style="-fx-background-color: #BBAC9F; -fx-background-radius: 5;" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+                  <Pane layoutX="347.0" layoutY="16.0" prefHeight="56.0" prefWidth="119.0" styleClass="scoreBoard" stylesheets="@style.css" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
                      <children>
                         <Label layoutX="36.0" layoutY="6.0" text="SCORE" textFill="#e4e4e4">
                            <font>
@@ -41,7 +42,7 @@
                         </Label>
                      </children>
                   </Pane>
-                  <Pane layoutX="219.0" layoutY="16.0" prefHeight="56.0" prefWidth="119.0" style="-fx-background-color: #BBAC9F; -fx-background-radius: 5;" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="14.0">
+                  <Pane layoutX="219.0" layoutY="16.0" prefHeight="56.0" prefWidth="119.0" styleClass="scoreBoard" stylesheets="@style.css" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="14.0">
                      <children>
                         <Label layoutX="36.0" layoutY="6.0" text="SCORE" textFill="#e4e4e4">
                            <font>
@@ -55,6 +56,16 @@
                         </Label>
                      </children>
                   </Pane>
+                  <Button layoutX="350.0" layoutY="81.0" mnemonicParsing="false" prefHeight="36.0" styleClass="newGameButton" stylesheets="@style.css" text="New Game" textFill="WHITE" AnchorPane.bottomAnchor="2.0" AnchorPane.rightAnchor="14.0">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Button>
+                  <Label layoutX="40.0" layoutY="99.0" text="Tjueførtiåtte" textFill="#998f84" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="88.0">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
             <Pane fx:id="gamePane" focusTraversable="true" onKeyPressed="#keyPressed" onMouseClicked="#gameClicked" style="-fx-background-color: #BBAC9F; -fx-background-radius: 15;" GridPane.rowIndex="1">

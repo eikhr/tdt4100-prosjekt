@@ -1,0 +1,16 @@
+.newGameButton {
+	-fx-background-color:  #8f7a66;
+}
+
+.newGameButton:hover {
+	-fx-background-color:  #b29881;
+}
+
+.newGameButton:pressed {
+	-fx-background-color:  #806d5c;
+}
+
+.scoreBoard {
+	-fx-background-color:  #BBAC9F;
+	-fx-background-radius: 5;
+}
