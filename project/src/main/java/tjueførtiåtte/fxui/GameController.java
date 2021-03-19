@@ -93,7 +93,6 @@ public class GameController {
 	}
 	
 	private void drawTiles() {
-		System.out.println(gamePane.getChildren().size());
 		gamePane.getChildren().clear();
 		gamePane.getChildren().addAll(generateTiles());
 	}

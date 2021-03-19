@@ -89,10 +89,11 @@ public class Game {
 			// after moving we add a new tile
 			addRandomTile();
 		} else {
-			System.out.println("didn't move");
+			// Do literally nothing
+			// System.out.println("didn't move");
 		}
 		
-		System.out.println(this.toString());
+		// System.out.println(this.toString());
 	}
 	
 	private boolean equals(Tile line1[], Tile line2[]) {
