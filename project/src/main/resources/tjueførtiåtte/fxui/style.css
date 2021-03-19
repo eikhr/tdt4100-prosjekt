@@ -14,3 +14,15 @@
 	-fx-background-color:  #BBAC9F;
 	-fx-background-radius: 5;
 }
+
+.overlayButton {
+	-fx-background-color:  #BBAC9F;
+}
+
+.overlayButton:hover {
+	-fx-background-color:  #c4b3a4;
+}
+
+.overlayButton:pressed {
+	-fx-background-color:  #9b8d82;
+}

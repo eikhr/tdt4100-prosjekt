@@ -1,6 +1,7 @@
 package tjueførtiåtte.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Board {
@@ -12,6 +13,25 @@ public class Board {
 	
 	public Tile getTile(int x, int y) {
 		return tiles[y][x];
+	}
+	
+	public Iterator<Tile> getIterator() {
+		return new BoardIterator(this);
+	}
+	
+	public Tile getBestTile() {
+		Iterator<Tile> iterator = getIterator(); 
+		
+		Tile best = null;
+		
+		while (iterator.hasNext()) {
+			Tile tile = iterator.next();
+			if (tile != null && (best == null || tile.getTier() > best.getTier())) {
+				best = tile;
+			}
+		}
+		
+		return best;
 	}
 	
 	public Tile[] getRow(int y) {
@@ -76,32 +96,34 @@ public class Board {
 		}
 	}
 	
-	public Tile getBestTile() {
-		Tile best = null;
-		for (int x = 0; x < getWidth(); x++) {
-			for (int y = 0; y < getHeight(); y++) {
-				if (best == null || tiles[y][x].getValue() > best.getValue()) {
-					best = tiles[x][y];
-				}
-			}
-		}
-		return best;
-	}
-	
 	public int getNumberOfTiles() {
+		Iterator<Tile> iterator = getIterator(); 
+		
 		int number = 0;
-		for (int x = 0; x < getWidth(); x++) {
-			for (int y = 0; y < getHeight(); y++) {
-				if (tiles[y][x] != null) {
-					number++;;
-				}
-			}
+		
+		while (iterator.hasNext()) {
+			Tile tile = iterator.next();
+			if (tile != null)
+				number++;
 		}
+		
 		return number;
 	}
 	
 	public int getNumberOfEmptyPositions() {
 		return getHeight()*getWidth() - getNumberOfTiles();
+	}
+	
+	public Coords getPositionOfTile(Tile tile) {		
+		for (int x = 0; x < getWidth(); x++) {
+			for (int y = 0; y < getHeight(); y++) {
+				if (getTile(x, y) == tile) {
+					return new Coords(x, y);
+				}
+			}
+		}
+		
+		throw new IllegalArgumentException("This tile is not on the board");
 	}
 	
 	public List<int[]> getEmptyPositions() {
