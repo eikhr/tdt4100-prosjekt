@@ -6,8 +6,11 @@ import java.util.Random;
 public class Game {
 	private Board board;
 	private int score = 0;
+	private GameManager manager;
 	
-	public Game() {
+	public Game(GameManager manager) {
+		this.manager = manager;
+		
 		board = new Board();
 		
 		addRandomTile();
@@ -86,8 +89,9 @@ public class Game {
 		}
 		
 		if (hasMoved) {
-			// after moving we add a new tile
+			// after moving we add a new tile and notify manager of potential score update
 			addRandomTile();
+			manager.onScoreUpdated();
 		} else {
 			// Do literally nothing
 			// System.out.println("didn't move");

@@ -13,6 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import tjueførtiåtte.model.Direction;
 import tjueførtiåtte.model.Game;
+import tjueførtiåtte.model.GameManager;
 import tjueførtiåtte.model.Tile;
 
 public class GameController {
@@ -35,7 +36,7 @@ public class GameController {
 		"#171b70"
 	};
 	
-	private Game game;
+	private GameManager gameManager;
 	
 	@FXML Pane gamePane;
 	
@@ -43,7 +44,7 @@ public class GameController {
 	
 	@FXML
 	private void initialize() {
-		game = new Game();
+		gameManager = new GameManager();
 		updateUI();
 		
 		System.out.println(gamePane.getScene());
@@ -52,6 +53,8 @@ public class GameController {
 
 	@FXML
 	private void keyPressed(KeyEvent keyEvt) {
+		Game game = gameManager.getGame();
+		
 		switch (keyEvt.getCode()) {
 		case UP:
 		case W:
@@ -89,7 +92,7 @@ public class GameController {
 	
 	public void updateUI() {
 		drawTiles();
-		scoreText.setText(String.valueOf(game.getScore()));
+		scoreText.setText(String.valueOf(gameManager.getGame().getScore()));
 	}
 	
 	private void drawTiles() {
@@ -98,6 +101,8 @@ public class GameController {
 	}
 	
 	private List<Label> generateTiles() {
+		Game game = gameManager.getGame();
+		
 		List<Label> tiles = new ArrayList<Label>();
 		
 		double padding = 10;
