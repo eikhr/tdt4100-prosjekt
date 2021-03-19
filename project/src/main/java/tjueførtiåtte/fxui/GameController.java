@@ -44,6 +44,10 @@ public class GameController {
 	@FXML
 	private void initialize() {
 		game = new Game();
+		updateUI();
+		
+		System.out.println(gamePane.getScene());
+		System.out.println(scoreText.getScene());
 	}
 
 	@FXML
@@ -83,9 +87,9 @@ public class GameController {
 		gamePane.requestFocus();
 	}
 	
-	private void updateUI() {
-		scoreText.setText(String.valueOf(game.getScore()));
+	public void updateUI() {
 		drawTiles();
+		scoreText.setText(String.valueOf(game.getScore()));
 	}
 	
 	private void drawTiles() {

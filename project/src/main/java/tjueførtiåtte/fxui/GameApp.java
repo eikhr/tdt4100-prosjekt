@@ -10,9 +10,14 @@ public class GameApp extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Parent parent = FXMLLoader.load(getClass().getResource("Game.fxml"));
-		primaryStage.setTitle("2048");
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("Game.fxml"));
+		GameController controller = new GameController();
+		loader.setController(controller);
+		Parent parent = loader.load();
+		primaryStage.setTitle("Tjueførtiåtte");
 		primaryStage.setScene(new Scene(parent));
+		primaryStage.heightProperty().addListener((obs, oldVal, newVal) -> controller.updateUI());
+		primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> controller.updateUI());
 		primaryStage.show();
 	}
 
