@@ -1,20 +1,13 @@
 package tjueførtiåtte.fxui;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import tjueførtiåtte.model.Direction;
 import tjueførtiåtte.model.Game;
 import tjueførtiåtte.model.GameManager;
-import tjueførtiåtte.model.Tile;
 
 public class GameController {
 	private GameManager gameManager;
