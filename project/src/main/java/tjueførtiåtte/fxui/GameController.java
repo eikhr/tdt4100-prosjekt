@@ -16,13 +16,12 @@ public class GameController {
 	
 	@FXML Label scoreText;
 	
+	@FXML Label highScoreText;
+	
 	@FXML
 	private void initialize() {
 		gameManager = new GameManager();
 		updateUI();
-		
-		System.out.println(gamePane.getScene());
-		System.out.println(scoreText.getScene());
 	}
 
 	@FXML
@@ -67,6 +66,7 @@ public class GameController {
 	public void updateUI() {
 		drawTiles();
 		scoreText.setText(String.valueOf(gameManager.getGame().getScore()));
+		highScoreText.setText(String.valueOf(gameManager.getHighScore()));
 	}
 	
 	private void drawTiles() {

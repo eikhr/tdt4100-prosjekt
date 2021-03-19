@@ -1,7 +1,7 @@
 package tjueførtiåtte.model;
 
 public class GameManager {
-	private double highScore;
+	private int highScore;
 	private Game game;
 	
 	public GameManager() {
@@ -13,7 +13,7 @@ public class GameManager {
 		game = new Game(this);
 	}
 	
-	public double getHighScore() {
+	public int getHighScore() {
 		return highScore;
 	}
 	
@@ -22,7 +22,7 @@ public class GameManager {
 	}
 	
 	public void onScoreUpdated() {
-		double score = game.getScore();
+		int score = game.getScore();
 		if (score > highScore) {
 			highScore = score;
 		}
