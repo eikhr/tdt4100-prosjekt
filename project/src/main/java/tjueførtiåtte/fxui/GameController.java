@@ -23,6 +23,12 @@ public class GameController {
 		gameManager = new GameManager();
 		updateUI();
 	}
+	
+	@FXML
+	private void onNewGameClick() {
+		gameManager.startNewGame();
+		updateUI();
+	}
 
 	@FXML
 	private void keyPressed(KeyEvent keyEvt) {

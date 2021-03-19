@@ -56,7 +56,7 @@
                         </Label>
                      </children>
                   </Pane>
-                  <Button layoutX="350.0" layoutY="81.0" mnemonicParsing="false" prefHeight="36.0" styleClass="newGameButton" stylesheets="@style.css" text="New Game" textFill="WHITE" AnchorPane.bottomAnchor="2.0" AnchorPane.rightAnchor="14.0">
+                  <Button layoutX="350.0" layoutY="81.0" mnemonicParsing="false" onAction="#onNewGameClick" prefHeight="36.0" styleClass="newGameButton" stylesheets="@style.css" text="New Game" textFill="WHITE" AnchorPane.bottomAnchor="2.0" AnchorPane.rightAnchor="14.0">
                      <font>
                         <Font size="17.0" />
                      </font>
