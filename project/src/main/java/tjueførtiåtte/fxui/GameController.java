@@ -1,7 +1,6 @@
 package tjueførtiåtte.fxui;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -40,14 +39,25 @@ public class GameController {
 		updateUI();
 	}
 	
+	private void onKeepPlayingClick() {
+		gameManager.getGame().continueGame();
+		updateUI();
+		gamePane.requestFocus();
+	}
+	
 	@FXML
 	private void onContinueGameClick() {
 		gameManager.getGame().continueGame();
+		gamePane.requestFocus();
 	}
 
 	@FXML
 	private void keyPressed(KeyEvent keyEvt) {
 		Game game = gameManager.getGame();
+		
+		if (game.getState() != GameState.ONGOING && game.getState() != GameState.CONTINUED) {
+			return;
+		}
 		
 		switch (keyEvt.getCode()) {
 		case UP:
@@ -92,7 +102,10 @@ public class GameController {
 		
 		switch (game.getState()) {
 		case LOST:
-			addOverlay();
+			addOverlay(false);
+			break;
+		case WON:
+			addOverlay(true);
 			break;
 		default:
 			clearOverlay();
@@ -100,14 +113,15 @@ public class GameController {
 		} 
 	}
 	
-	public void addOverlay() {
+	// add overlay, either won or lost
+	public void addOverlay(boolean won) {
 		overlayPane.getChildren().clear();
-		overlayPane.setStyle("-fx-background-color: #00000044; -fx-background-radius: 15;");
+		overlayPane.setStyle(won ? "-fx-background-color: #edc40044; -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(237, 196, 0, 0.8), 40, 0, 0, 0);" : "-fx-background-color: #00000044; -fx-background-radius: 15;");
 		
 		
 		StackPane textPane = new StackPane();
 		Label text = new Label();
-		text.setText("You lost!");
+		text.setText(won ? "You Won!" : "You lost!");
 		text.setTextFill(Color.WHITE);
 		text.setFont(new Font(40));
 		textPane.getChildren().add(text);
@@ -117,9 +131,9 @@ public class GameController {
 		
 		StackPane buttonPane = new StackPane();
 		Button button = new Button();
-		button.setText("New Game");
+		button.setText(won ? "Keep Playing" : "New Game");
 		button.setTextFill(Color.WHITE);
-		button.setOnAction((action) -> onNewGameClick());
+		button.setOnAction(won ? (action) -> onKeepPlayingClick() : (action) -> onNewGameClick());
 		button.getStylesheets().add(getClass().getResource("style.css").toString());
 		button.getStyleClass().add("overlayButton");
 		button.setFont(new Font(16));

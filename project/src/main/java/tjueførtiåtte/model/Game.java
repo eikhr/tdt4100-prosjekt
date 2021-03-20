@@ -47,7 +47,9 @@ public class Game {
 	}
 	
 	public void move(Direction direction) {
-		
+		if (state != GameState.ONGOING && state != GameState.CONTINUED) {
+			throw new IllegalStateException("Cannot move while game state is not ongoing or continued");
+		}
 
 		boolean reverse = false;
 		boolean vertical = false;
