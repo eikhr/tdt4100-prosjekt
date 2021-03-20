@@ -56,7 +56,7 @@ public class Game {
 				if (!board.isEmptyTile(x, y)) {
 					Tile tile = board.getTile(x, y);
 					Coords coords = new Coords(x, y);
-					tile.setPreviousPosition(coords);
+					tile.setPrevious(coords);
 				}
 			}
 		}
@@ -220,7 +220,7 @@ public class Game {
 				break;
 			if (previous != null && tile.canMergeWith(previous)) {
 				// "merge" with the previous tile by increasing its value, and not adding this one
-				previous.setPreviousPosition(tile.getPreviousPosition());;
+				previous.setPrevious(tile.getPreviousPosition());;
 				previous.increaseValue();
 				score += previous.getValue();
 				previous = null;

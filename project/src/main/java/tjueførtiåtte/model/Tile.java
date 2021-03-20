@@ -1,10 +1,8 @@
 package tjueførtiåtte.model;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 public class Tile {
 	private int tier;
+	private int previousTier = 0;
 	private Board board;
 	
 	private Coords previousPosition;
@@ -15,8 +13,17 @@ public class Tile {
 		this.tier = tier;
 	}
 	
-	public void setPreviousPosition(Coords coords) {
-		previousPosition = coords;
+	public void setPrevious(Coords position) {
+		previousPosition = position;
+		previousTier = tier;
+	}
+	
+	public int getPreviousValue() {
+		return (int) Math.pow(2, previousTier);
+	}
+	
+	public int getPreviousTier() {
+		return previousTier;
 	}
 	
 	public Coords getPreviousPosition() {
