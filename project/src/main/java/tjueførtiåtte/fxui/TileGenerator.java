@@ -66,9 +66,6 @@ public class TileGenerator {
 		
 		// create all ghost tiles
 		for (GhostTile tile : game.getGhostTiles()) {
-			System.out.print(tile.getValue());
-			System.out.print(tile.getPreviousValue());
-			
 			Coords pos = tile.getPosition();
 			
 			double xPos = (pos.getX()+1)*padding + pos.getX()*tileSize;
