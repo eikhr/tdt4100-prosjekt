@@ -7,10 +7,20 @@ public class Tile {
 	private int tier;
 	private Board board;
 	
+	private Coords previousPosition;
+	
 	public Tile(Board board, int tier) {
 		this.board = board;
 		this.validateTier(tier);
 		this.tier = tier;
+	}
+	
+	public void setPreviousPosition(Coords coords) {
+		previousPosition = coords;
+	}
+	
+	public Coords getPreviousPosition() {
+		return previousPosition;
 	}
 
 	private void validateTier(int tier) {

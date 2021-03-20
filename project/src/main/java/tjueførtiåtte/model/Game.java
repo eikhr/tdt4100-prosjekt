@@ -50,6 +50,16 @@ public class Game {
 		if (state != GameState.ONGOING && state != GameState.CONTINUED) {
 			throw new IllegalStateException("Cannot move while game state is not ongoing or continued");
 		}
+		
+		for (int x = 0; x < board.getWidth(); x++) {
+			for (int y = 0; y < board.getHeight(); y++) {
+				if (!board.isEmptyTile(x, y)) {
+					Tile tile = board.getTile(x, y);
+					Coords coords = new Coords(x, y);
+					tile.setPreviousPosition(coords);
+				}
+			}
+		}
 
 		boolean reverse = false;
 		boolean vertical = false;
@@ -210,6 +220,7 @@ public class Game {
 				break;
 			if (previous != null && tile.canMergeWith(previous)) {
 				// "merge" with the previous tile by increasing its value, and not adding this one
+				previous.setPreviousPosition(tile.getPreviousPosition());;
 				previous.increaseValue();
 				score += previous.getValue();
 				previous = null;

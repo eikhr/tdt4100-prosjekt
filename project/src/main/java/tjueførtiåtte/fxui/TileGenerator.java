@@ -3,10 +3,13 @@ package tjueførtiåtte.fxui;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.animation.TranslateTransition;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
+import tjueførtiåtte.model.Coords;
 import tjueførtiåtte.model.Game;
 import tjueførtiåtte.model.Tile;
 
@@ -41,6 +44,7 @@ public class TileGenerator {
 	
 	public List<Label> generateTiles() {		
 		List<Label> tiles = new ArrayList<Label>();
+		List<Label> emptyTiles = new ArrayList<Label>();
 		
 		double padding = 10;
 		
@@ -62,25 +66,38 @@ public class TileGenerator {
 				if (game.boardPositionHasTile(x, y)) {
 					Tile tile = game.getTile(x, y);
 					
+					Coords from = tile.getPreviousPosition();
+					
+					double fromPosX;
+					double fromPosY;
+					if (from != null) {
+						fromPosX = (from.getX()+1)*padding + from.getX()*tileSize;
+						fromPosY = (from.getY()+1)*padding + from.getY()*tileSize;
+					} else {
+						fromPosX = xPos;
+						fromPosY = yPos;
+					}
+					
 					String text = String.valueOf(tile.getValue());
 					
 					String color = tileColors[tile.getTier()];
 					
 					boolean darkText = tile.getTier() < 3;
 					
-					Label tileLabel = generateTile(xPos, yPos, tileSize, text, color, darkText);
+					Label tileLabel = generateTile(xPos, yPos, fromPosX, fromPosY, tileSize, text, color, darkText);
 					tiles.add(tileLabel);
 				} else {
-					tiles.add(generateTile(xPos, yPos, tileSize, "", "#CCC1B3", false));
+					emptyTiles.add(generateTile(xPos, yPos, xPos, yPos, tileSize, "", "#CCC1B3", false));
 				}
 			}
 		}
 		
 		
-		return tiles;
+		emptyTiles.addAll(tiles);
+		return emptyTiles;
 	}
 	
-	private Label generateTile(double posX, double posY, double size, String text, String color, boolean darkText) {
+	private Label generateTile(double posX, double posY, double fromPosX, double fromPosY, double size, String text, String color, boolean darkText) {
 		Label tile = new Label();
 		tile.setText(text);
 		tile.setFont(new Font(40));
@@ -91,6 +108,26 @@ public class TileGenerator {
 		tile.setStyle("-fx-background-color: "+color+"; -fx-background-radius: 10;");
 		tile.setPrefHeight(size);
 		tile.setPrefWidth(size);
+		
+		if (posX != fromPosX) {
+			
+			TranslateTransition translateTransition =
+		            new TranslateTransition(Duration.millis(200), tile);
+	        translateTransition.setFromX(fromPosX-posX);
+	        translateTransition.setToX(0);
+	        translateTransition.setCycleCount(1);
+	        
+	        translateTransition.play();
+		}
+		if (posY != fromPosY) {
+			TranslateTransition translateTransition =
+		            new TranslateTransition(Duration.millis(200), tile);
+	        translateTransition.setFromY(fromPosY-posY);
+	        translateTransition.setToY(0);
+	        translateTransition.setCycleCount(1);
+	        
+	        translateTransition.play();
+		}
 		
 		return tile;
 	}
