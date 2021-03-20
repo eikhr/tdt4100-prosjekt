@@ -1,11 +1,10 @@
 package tjueførtiåtte.model;
 
 public class Tile {
-	private int tier;
-	private int previousTier = 0;
-	private Board board;
-	
-	private Coords previousPosition;
+	protected int tier;
+	protected int previousTier = 0;
+	protected Board board;
+	protected Coords previousPosition;
 	
 	public Tile(Board board, int tier) {
 		this.board = board;

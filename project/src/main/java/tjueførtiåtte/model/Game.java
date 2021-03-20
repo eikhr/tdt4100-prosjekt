@@ -1,5 +1,6 @@
 package tjueførtiåtte.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -8,6 +9,8 @@ public class Game {
 	private Board board;
 	private int score = 0;
 	private GameManager manager;
+	private List<GhostTile> ghostTiles = new ArrayList<GhostTile>();
+	
 	
 	public Game(GameManager manager) {
 		this.manager = manager;
@@ -20,6 +23,10 @@ public class Game {
 	
 	public GameState getState() {
 		return state;
+	}
+	
+	public List<GhostTile> getGhostTiles() {
+		return ghostTiles;
 	}
 	
 	public int getScore() {
@@ -46,7 +53,9 @@ public class Game {
 		return board.getHeight();
 	}
 	
+	// Executes a move in the given direction
 	public void move(Direction direction) {
+		ghostTiles.clear();
 		if (state != GameState.ONGOING && state != GameState.CONTINUED) {
 			throw new IllegalStateException("Cannot move while game state is not ongoing or continued");
 		}
@@ -196,7 +205,7 @@ public class Game {
 		return newLine;
 	}
 	
-	// moves line to beginning of list, and merges any mergeable tiles 
+	// moves line to beginning of list, and merges any mergeable tiles, adds removed tiles to gostTiles
 	private Tile[] moveLine(Tile[] line, boolean reverse) {
 		if (reverse)
 			line = reverse(line);
@@ -220,9 +229,9 @@ public class Game {
 				break;
 			if (previous != null && tile.canMergeWith(previous)) {
 				// "merge" with the previous tile by increasing its value, and not adding this one
-				previous.setPrevious(tile.getPreviousPosition());;
 				previous.increaseValue();
 				score += previous.getValue();
+				ghostTiles.add(new GhostTile(tile, previous));
 				previous = null;
 			} else {
 				previous = tile;

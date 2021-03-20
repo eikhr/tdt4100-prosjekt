@@ -1,5 +1,8 @@
 package tjueførtiåtte.fxui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -15,6 +18,7 @@ import tjueførtiåtte.model.Direction;
 import tjueførtiåtte.model.Game;
 import tjueførtiåtte.model.GameManager;
 import tjueførtiåtte.model.GameState;
+import tjueførtiåtte.model.GhostTile;
 
 public class GameController {
 	private GameManager gameManager;
@@ -62,31 +66,29 @@ public class GameController {
 		switch (keyEvt.getCode()) {
 		case UP:
 		case W:
-			game.move(Direction.UP);
-			keyEvt.consume();
-			updateUI();
+			doMove(keyEvt, Direction.UP);
 			break;
 		case DOWN:
 		case S:
-			game.move(Direction.DOWN);
-			keyEvt.consume();
-			updateUI();
+			doMove(keyEvt, Direction.DOWN);
 			break;
 		case LEFT:
 		case A:
-			game.move(Direction.LEFT);
-			keyEvt.consume();
-			updateUI();
+			doMove(keyEvt, Direction.LEFT);
 			break;
 		case RIGHT:
 		case D:
-			game.move(Direction.RIGHT);
-			keyEvt.consume();
-			updateUI();
+			doMove(keyEvt, Direction.RIGHT);
 			break;
 		default:
 			break;
 		}
+	}
+	
+	private void doMove(KeyEvent keyEvt, Direction direction) {
+		gameManager.getGame().move(direction);
+		keyEvt.consume();
+		updateUI();
 	}
 	
 	@FXML

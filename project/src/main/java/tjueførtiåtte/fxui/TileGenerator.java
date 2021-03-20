@@ -16,6 +16,7 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 import tjueførtiåtte.model.Coords;
 import tjueførtiåtte.model.Game;
+import tjueførtiåtte.model.GhostTile;
 import tjueførtiåtte.model.Tile;
 
 public class TileGenerator {
@@ -48,8 +49,9 @@ public class TileGenerator {
 	}
 	
 	public List<Node> generateTiles() {		
+		List<Node> backgroundTiles = new ArrayList<Node>();
+		List<Node> ghostTiles = new ArrayList<Node>();
 		List<Node> tiles = new ArrayList<Node>();
-		List<Node> emptyTiles = new ArrayList<Node>();
 		
 		double padding = 10;
 		
@@ -62,6 +64,19 @@ public class TileGenerator {
 		
 		double tileSize = Math.min(tileWidth, tileHeight);
 		
+		// create all ghost tiles
+		for (GhostTile tile : game.getGhostTiles()) {
+			System.out.print(tile.getValue());
+			System.out.print(tile.getPreviousValue());
+			
+			Coords pos = tile.getPosition();
+			
+			double xPos = (pos.getX()+1)*padding + pos.getX()*tileSize;
+			double yPos = (pos.getY()+1)*padding + pos.getY()*tileSize;
+
+			Node tileNode = generateTile(xPos, yPos, tileSize, padding, tile);
+			ghostTiles.add(tileNode);
+		}
 		
 		// create all tiles
 		for (int x = 0; x < game.getBoardWidth(); x++) {
@@ -69,41 +84,25 @@ public class TileGenerator {
 				double xPos = (x+1)*padding + x*tileSize;
 				double yPos = (y+1)*padding + y*tileSize;
 				
-				emptyTiles.add(generateBackgroundTile(xPos, yPos, tileSize));
+				backgroundTiles.add(generateBackgroundTile(xPos, yPos, tileSize));
 				
 				if (game.boardPositionHasTile(x, y)) {
 					Tile tile = game.getTile(x, y);
 					
-					Coords from = tile.getPreviousPosition();
-					
-					double fromPosX;
-					double fromPosY;
-					if (from != null) {
-						fromPosX = (from.getX()+1)*padding + from.getX()*tileSize;
-						fromPosY = (from.getY()+1)*padding + from.getY()*tileSize;
-					} else {
-						fromPosX = xPos;
-						fromPosY = yPos;
-					}
-					
-					String text = String.valueOf(tile.getValue());
-					String prevText = String.valueOf(tile.getPreviousValue());
-					
-					String color = tileColors[tile.getTier()];
-					String prevColor = tileColors[tile.getPreviousTier()];
-					
-					boolean darkText = tile.getTier() < 3;
-					boolean prevDarkText = tile.getPreviousTier() < 3;
-					
-					Label tileLabel = generateTile(xPos, yPos, fromPosX, fromPosY, tileSize, text, prevText, color, prevColor, darkText, prevDarkText);
-					tiles.add(tileLabel);
+					Node tileNode = generateTile(xPos, yPos, tileSize, padding, tile);
+					tiles.add(tileNode);
 				}
 			}
 		}
 		
+
+		List<Node> allTiles = new ArrayList<Node>();
+		allTiles.addAll(backgroundTiles);
+		allTiles.addAll(ghostTiles);
+		allTiles.addAll(tiles);
 		
-		emptyTiles.addAll(tiles);
-		return emptyTiles;
+		
+		return allTiles;
 	}
 	
 	private Pane generateBackgroundTile(double posX, double posY, double size) {
@@ -117,30 +116,53 @@ public class TileGenerator {
 		return tile;
 	}
 	
-	private Label generateTile(double posX, double posY, double fromPosX, double fromPosY, double size, String text, String prevText, String color, String prevColor, boolean darkText, boolean prevDarkText) {
-		Label tile = new Label();
-		tile.setText(prevText); // gets changed to "text" after movement animation
-		tile.setFont(new Font(40));
-		tile.setTextFill(prevDarkText ? Color.BLACK : Color.WHITE);
-		tile.setAlignment(Pos.CENTER);
-		tile.setLayoutX(posX);
-		tile.setLayoutY(posY);
-		tile.setStyle("-fx-background-color: "+prevColor+"; -fx-background-radius: 10;");
-		tile.setPrefHeight(size);
-		tile.setPrefWidth(size);
+	private Label generateTile(double posX, double posY, double size, double padding, Tile tile) {
+		Coords from = tile.getPreviousPosition();
 		
-		TranslateTransition movementTransition = new TranslateTransition(Duration.millis(150), tile);
+		double fromPosX;
+		double fromPosY;
+		if (from != null) {
+			fromPosX = (from.getX()+1)*padding + from.getX()*size;
+			fromPosY = (from.getY()+1)*padding + from.getY()*size;
+		} else {
+			fromPosX = posX;
+			fromPosY = posY;
+		}
+		
+		String text = String.valueOf(tile.getValue());
+		String prevText = String.valueOf(tile.getPreviousValue());
+		
+		String color = tileColors[tile.getTier()];
+		String prevColor = tileColors[tile.getPreviousTier()];
+		
+		boolean darkText = tile.getTier() < 3;
+		boolean prevDarkText = tile.getPreviousTier() < 3;
+		
+		
+		
+		Label tileNode = new Label();
+		tileNode.setText(prevText); // gets changed to "text" after movement animation
+		tileNode.setFont(new Font(40));
+		tileNode.setTextFill(prevDarkText ? Color.BLACK : Color.WHITE);
+		tileNode.setAlignment(Pos.CENTER);
+		tileNode.setLayoutX(posX);
+		tileNode.setLayoutY(posY);
+		tileNode.setStyle("-fx-background-color: "+prevColor+"; -fx-background-radius: 10;");
+		tileNode.setPrefHeight(size);
+		tileNode.setPrefWidth(size);
+		
+		TranslateTransition movementTransition = new TranslateTransition(Duration.millis(120), tileNode);
 		movementTransition.setCycleCount(1);
 		movementTransition.setOnFinished(event -> {
-			tile.setText(text);
-			tile.setOpacity(1);
-			tile.setStyle("-fx-background-color: "+color+"; -fx-background-radius: 10;");
-			tile.setTextFill(darkText ? Color.BLACK : Color.WHITE);
+			tileNode.setText(text);
+			tileNode.setOpacity(1);
+			tileNode.setStyle("-fx-background-color: "+color+"; -fx-background-radius: 10;");
+			tileNode.setTextFill(darkText ? Color.BLACK : Color.WHITE);
 		});
 		
 		if (prevText.equals("1")) {
 			// the tile did not exist before, it should only be shown after the movement transition
-			tile.setOpacity(0);
+			tileNode.setOpacity(0);
 		}
 		
 		
@@ -161,20 +183,20 @@ public class TileGenerator {
 			ScaleTransition scaleUp = new ScaleTransition(Duration.millis(50));
 			ScaleTransition scaleDown = new ScaleTransition(Duration.millis(50));
 			
-			scaleUp.setToX(1.1);
-			scaleUp.setToY(1.1);
+			scaleUp.setToX(1.15);
+			scaleUp.setToY(1.15);
 			
 			scaleDown.setToX(1);
 			scaleDown.setToY(1);
 			
 			
-			SequentialTransition transition = new SequentialTransition(tile, movementTransition, scaleUp, scaleDown);
+			SequentialTransition transition = new SequentialTransition(tileNode, movementTransition, scaleUp, scaleDown);
 			transition.play();
 			
 		} else {
 			movementTransition.play();
 		}
 		
-		return tile;
+		return tileNode;
 	}
 }
