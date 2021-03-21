@@ -40,11 +40,13 @@ public class TileGenerator {
 	private Game game;
 	private double containerWidth;
 	private double containerHeight;
+	private boolean animate;
 	
-	public TileGenerator(Game game, double containerWidth, double containerHeight) {
+	public TileGenerator(Game game, double containerWidth, double containerHeight, boolean animate) {
 		this.game = game;
 		this.containerWidth = containerWidth;
 		this.containerHeight = containerHeight;
+		this.animate = animate;
 	}
 	
 	public List<Node> generateTiles() {		
@@ -137,60 +139,68 @@ public class TileGenerator {
 		
 		
 		Label tileNode = new Label();
-		tileNode.setText(prevText); // gets changed to "text" after movement animation
+		tileNode.setText(text); // gets changed to "text" after movement animation
+		tileNode.setStyle("-fx-background-color: "+color+"; -fx-background-radius: 10;");
 		tileNode.setFont(new Font(40));
-		tileNode.setTextFill(prevDarkText ? Color.BLACK : Color.WHITE);
+		tileNode.setTextFill(darkText ? Color.BLACK : Color.WHITE);
 		tileNode.setAlignment(Pos.CENTER);
 		tileNode.setLayoutX(posX);
 		tileNode.setLayoutY(posY);
-		tileNode.setStyle("-fx-background-color: "+prevColor+"; -fx-background-radius: 10;");
 		tileNode.setPrefHeight(size);
 		tileNode.setPrefWidth(size);
 		
-		TranslateTransition movementTransition = new TranslateTransition(Duration.millis(120), tileNode);
-		movementTransition.setCycleCount(1);
-		movementTransition.setOnFinished(event -> {
-			tileNode.setText(text);
-			tileNode.setOpacity(1);
-			tileNode.setStyle("-fx-background-color: "+color+"; -fx-background-radius: 10;");
-			tileNode.setTextFill(darkText ? Color.BLACK : Color.WHITE);
-		});
-		
-		if (prevText.equals("1")) {
-			// the tile did not exist before, it should only be shown after the movement transition
-			tileNode.setOpacity(0);
-		}
-		
-		
-		if (posX != fromPosX) {
-			movementTransition.setFromX(fromPosX-posX);
-			movementTransition.setToX(0);
-		}
-		
-		if (posY != fromPosY) {
-			movementTransition.setFromY(fromPosY-posY);
-			movementTransition.setToY(0);
-		}
-		
-		if (!text.equals(prevText)) {
-			// we have a tile with updated value or a new tile
-			// we need to play the "bump" transition
-			
-			ScaleTransition scaleUp = new ScaleTransition(Duration.millis(50));
-			ScaleTransition scaleDown = new ScaleTransition(Duration.millis(50));
-			
-			scaleUp.setToX(1.15);
-			scaleUp.setToY(1.15);
-			
-			scaleDown.setToX(1);
-			scaleDown.setToY(1);
+		if (animate) {
+			tileNode.setText(prevText); // gets changed to "text" after movement animation
+			tileNode.setStyle("-fx-background-color: "+prevColor+"; -fx-background-radius: 10;");
+			tileNode.setTextFill(prevDarkText ? Color.BLACK : Color.WHITE);
 			
 			
-			SequentialTransition transition = new SequentialTransition(tileNode, movementTransition, scaleUp, scaleDown);
-			transition.play();
 			
-		} else {
-			movementTransition.play();
+			TranslateTransition movementTransition = new TranslateTransition(Duration.millis(120), tileNode);
+			movementTransition.setCycleCount(1);
+			movementTransition.setOnFinished(event -> {
+				tileNode.setText(text);
+				tileNode.setOpacity(1);
+				tileNode.setStyle("-fx-background-color: "+color+"; -fx-background-radius: 10;");
+				tileNode.setTextFill(darkText ? Color.BLACK : Color.WHITE);
+			});
+			
+			if (prevText.equals("1")) {
+				// the tile did not exist before, it should only be shown after the movement transition
+				tileNode.setOpacity(0);
+			}
+			
+			
+			if (posX != fromPosX) {
+				movementTransition.setFromX(fromPosX-posX);
+				movementTransition.setToX(0);
+			}
+			
+			if (posY != fromPosY) {
+				movementTransition.setFromY(fromPosY-posY);
+				movementTransition.setToY(0);
+			}
+			
+			if (!text.equals(prevText)) {
+				// we have a tile with updated value or a new tile
+				// we need to play the "bump" transition
+				
+				ScaleTransition scaleUp = new ScaleTransition(Duration.millis(50));
+				ScaleTransition scaleDown = new ScaleTransition(Duration.millis(50));
+				
+				scaleUp.setToX(1.15);
+				scaleUp.setToY(1.15);
+				
+				scaleDown.setToX(1);
+				scaleDown.setToY(1);
+				
+				
+				SequentialTransition transition = new SequentialTransition(tileNode, movementTransition, scaleUp, scaleDown);
+				transition.play();
+				
+			} else {
+				movementTransition.play();
+			}
 		}
 		
 		return tileNode;

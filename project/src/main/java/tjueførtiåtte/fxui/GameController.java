@@ -30,18 +30,19 @@ public class GameController {
 	@FXML
 	private void initialize() {
 		gameManager = new GameManager();
-		updateUI();
+		updateUI(true);
+		gamePane.requestFocus();
 	}
 	
 	@FXML
 	private void onNewGameClick() {
 		gameManager.startNewGame();
-		updateUI();
+		updateUI(true);
 	}
 	
 	private void onKeepPlayingClick() {
 		gameManager.getGame().continueGame();
-		updateUI();
+		updateUI(false);
 		gamePane.requestFocus();
 	}
 	
@@ -84,7 +85,7 @@ public class GameController {
 	private void doMove(KeyEvent keyEvt, Direction direction) {
 		gameManager.getGame().move(direction);
 		keyEvt.consume();
-		updateUI();
+		updateUI(true);
 	}
 	
 	@FXML
@@ -92,9 +93,9 @@ public class GameController {
 		gamePane.requestFocus();
 	}
 	
-	public void updateUI() {
+	public void updateUI(boolean animate) {
 		Game game = gameManager.getGame();
-		drawTiles();
+		drawTiles(animate);
 		scoreText.setText(String.valueOf(game.getScore()));
 		highScoreText.setText(String.valueOf(gameManager.getHighScore()));
 		
@@ -147,8 +148,8 @@ public class GameController {
 	}
 	
 	
-	private void drawTiles() {
-		TileGenerator generator = new TileGenerator(gameManager.getGame(), gamePane.getWidth(), gamePane.getHeight());
+	private void drawTiles(boolean animate) {
+		TileGenerator generator = new TileGenerator(gameManager.getGame(), gamePane.getWidth(), gamePane.getHeight(), animate);
 		
 		gamePane.getChildren().clear();
 		gamePane.getChildren().addAll(generator.generateTiles());
