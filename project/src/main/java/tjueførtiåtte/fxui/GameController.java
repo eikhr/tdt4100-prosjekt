@@ -1,8 +1,5 @@
 package tjueførtiåtte.fxui;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -18,7 +15,6 @@ import tjueførtiåtte.model.Direction;
 import tjueførtiåtte.model.Game;
 import tjueførtiåtte.model.GameManager;
 import tjueførtiåtte.model.GameState;
-import tjueførtiåtte.model.GhostTile;
 
 public class GameController {
 	private GameManager gameManager;
