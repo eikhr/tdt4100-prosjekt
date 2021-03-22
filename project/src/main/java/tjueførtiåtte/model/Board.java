@@ -6,9 +6,13 @@ import java.util.List;
 
 public class Board {
 	private Tile[][] tiles;
+	private int height;
+	private int width;
 	
-	public Board() {
-		tiles = new Tile[4][4];
+	public Board(int height, int width) {
+		tiles = new Tile[height][width];
+		this.height = height;
+		this.width = width;
 	}
 	
 	public Tile getTile(int x, int y) {
@@ -65,11 +69,11 @@ public class Board {
 	}
 	
 	public int getWidth() {
-		return 4;
+		return width;
 	}
 	
 	public int getHeight() {
-		return 4;
+		return height;
 	}
 	
 	public void addTile(int x, int y, Tile tile) {

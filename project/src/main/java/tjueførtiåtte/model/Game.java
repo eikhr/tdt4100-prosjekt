@@ -15,7 +15,7 @@ public class Game {
 	public Game(GameManager manager) {
 		this.manager = manager;
 		
-		board = new Board();
+		board = new Board(4,4);
 		
 		addRandomTile();
 		addRandomTile();
