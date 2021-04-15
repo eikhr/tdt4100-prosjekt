@@ -22,7 +22,7 @@ public class BoardIterator implements Iterator<Tile> {
 		
 		index++;
 		
-		return board.getTile(xPos, yPos);
+		return board.getTile(new Coordinates(xPos, yPos));
 	}
 
 }

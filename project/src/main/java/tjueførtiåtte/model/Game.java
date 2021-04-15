@@ -32,16 +32,16 @@ public class Game {
 		return score;
 	}
 	
-	public Tile getTile(int x, int y) {
-		return board.getTile(x, y);
+	public Tile getTile(Coordinates position) {
+		return board.getTile(position);
 	}
 	
 	public int getNumberOfTiles() {
 		return board.getNumberOfTiles();
 	}
 	
-	public boolean boardPositionHasTile(int x, int y) {
-		return !board.isEmptyTile(x, y);
+	public boolean boardPositionHasTile(Coordinates position) {
+		return !board.isEmptyTile(position);
 	}
 	
 	public int getBoardWidth() {
@@ -65,10 +65,10 @@ public class Game {
 		
 		for (int x = 0; x < board.getWidth(); x++) {
 			for (int y = 0; y < board.getHeight(); y++) {
-				if (!board.isEmptyTile(x, y)) {
-					Tile tile = board.getTile(x, y);
-					Coordinates coords = new Coordinates(x, y);
-					tile.setPrevious(coords);
+				Coordinates position = new Coordinates(x,y);
+				if (!board.isEmptyTile(position)) {
+					Tile tile = board.getTile(position);
+					tile.setPrevious(position);
 				}
 			}
 		}
@@ -166,7 +166,7 @@ public class Game {
 		// horizontally
 		for (int x = 0; x < board.getWidth()-1; x++) {
 			for (int y = 0; y < board.getHeight(); y++) {
-				if (board.getTile(x, y).canMergeWith(board.getTile(x+1, y)))
+				if (board.getTile(new Coordinates(x, y)).canMergeWith(board.getTile(new Coordinates(x+1, y))))
 					return true;
 			}
 		}
@@ -174,7 +174,7 @@ public class Game {
 		// vertically
 		for (int x = 0; x < board.getWidth(); x++) {
 			for (int y = 0; y < board.getHeight()-1; y++) {
-				if (board.getTile(x, y).canMergeWith(board.getTile(x, y+1)))
+				if (board.getTile(new Coordinates(x, y)).canMergeWith(board.getTile(new Coordinates(x, y+1))))
 					return true;
 			}
 		}
@@ -252,7 +252,7 @@ public class Game {
 
 	// adds a random tile in a random empty spot
 	private void addRandomTile() {
-		List<int[]> emptyPositions = board.getEmptyPositions();
+		List<Coordinates> emptyPositions = board.getEmptyPositions();
 		
 		if (emptyPositions.isEmpty()) {
 			throw new IllegalStateException("No empty positions to place new tile in!");
@@ -260,19 +260,19 @@ public class Game {
 		
 		// choose a random position
 		Random random = new Random();
-		int[] position = emptyPositions.get(random.nextInt(emptyPositions.size()));
+		Coordinates position = emptyPositions.get(random.nextInt(emptyPositions.size()));
 		
 		// add the tile
-		addRandomTile(position[0], position[1]);
+		addRandomTile(position);
 	}
 	
 	// adds a random tile in the specified location (either a 2 or a 4)
-	private void addRandomTile(int x, int y) {
+	private void addRandomTile(Coordinates position) {
 		Random random = new Random();
 		if (random.nextInt(5) == 0) {
-			board.addTile(x, y, new Tile(board, 2));
+			board.addTile(position, new Tile(board, 2));
 		} else {
-			board.addTile(x, y, new Tile(board, 1));
+			board.addTile(position, new Tile(board, 1));
 		}
 	}
 	
