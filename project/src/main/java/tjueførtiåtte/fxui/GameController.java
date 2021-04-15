@@ -15,8 +15,9 @@ import tjueførtiåtte.model.Direction;
 import tjueførtiåtte.model.Game;
 import tjueførtiåtte.model.GameManager;
 import tjueførtiåtte.model.GameState;
+import tjueførtiåtte.model.HighScoreListener;
 
-public class GameController {
+public class GameController implements HighScoreListener {
 	private GameManager gameManager;
 	
 	@FXML Pane gamePane;
@@ -27,9 +28,19 @@ public class GameController {
 	
 	@FXML Label highScoreText;
 	
+	private final IGameFileReading fileSupport = new GameFileSupport();
+	
 	@FXML
 	private void initialize() {
-		gameManager = new GameManager();
+		int highScore;
+		try {
+			highScore = fileSupport.readHighScore();
+		} catch (Throwable e) {
+			highScore = 0;
+		}
+		
+		gameManager = new GameManager(highScore);
+		gameManager.addHighScoreListener(this);
 		updateUI(true);
 		gamePane.requestFocus();
 	}
@@ -153,5 +164,15 @@ public class GameController {
 		
 		gamePane.getChildren().clear();
 		gamePane.getChildren().addAll(generator.generateTiles());
+	}
+
+	@Override
+	public void highScoreUpdated(int newHighScore) {
+		try {
+			fileSupport.writeHighScore(newHighScore);
+		} catch (Throwable e) {
+			// TODO: do something?
+		}
+		
 	}
 }

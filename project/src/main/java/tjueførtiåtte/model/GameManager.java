@@ -1,11 +1,16 @@
 package tjueførtiåtte.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 public class GameManager implements GameScoreListener{
 	private int highScore;
 	private Game game;
 	
-	public GameManager() {
-		highScore = 1337; // TODO: load high score from persistent storage
+	private Collection<HighScoreListener> highScoreListeners = new ArrayList<HighScoreListener>();
+	
+	public GameManager(int loadedHighScore) {
+		highScore = loadedHighScore; // TODO: load high score from persistent storage
 		startNewGame();
 	}
 	
@@ -15,11 +20,18 @@ public class GameManager implements GameScoreListener{
 			game.removeScoreListener(this);
 		}
 		
+		game = new Game();
+		
 		game.addScoreListener(this);
 	}
 	
 	public int getHighScore() {
 		return highScore;
+	}
+	
+	private void updateHighScore(int newHighScore) {
+		highScore = newHighScore;
+		fireHighScoreUpdated(newHighScore);
 	}
 	
 	public Game getGame() {
@@ -29,7 +41,21 @@ public class GameManager implements GameScoreListener{
 	public void gameScoreUpdated(int newScore) {
 		int score = game.getScore();
 		if (score > highScore) {
-			highScore = score;
+			updateHighScore(score);
 		}
+	}
+	
+	private void fireHighScoreUpdated(int newHighScore) {
+		for(HighScoreListener listener : highScoreListeners) {
+			listener.highScoreUpdated(newHighScore);
+		}
+	}
+	
+	public void addHighScoreListener(HighScoreListener listener) {
+		highScoreListeners.add(listener);
+	}
+	
+	public void removeHighScoreListener(HighScoreListener listener) {
+		highScoreListeners.remove(listener);
 	}
 }
