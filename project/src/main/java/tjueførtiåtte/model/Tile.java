@@ -4,7 +4,7 @@ public class Tile implements RenderableTile {
 	private int tier;
 	private int previousTier = 0;
 	private Board board;
-	private Coordinates previousPosition;
+	private Position previousPosition;
 	
 	public Tile(Board board, int tier) {
 		this.board = board;
@@ -12,7 +12,7 @@ public class Tile implements RenderableTile {
 		this.tier = tier;
 	}
 	
-	public void setPrevious(Coordinates position) {
+	public void setPrevious(Position position) {
 		previousPosition = position;
 		previousTier = tier;
 	}
@@ -58,12 +58,12 @@ public class Tile implements RenderableTile {
 	}
 	
 	@Override
-	public Coordinates getPosition() {
+	public Position getPosition() {
 		return board.getPositionOfTile(this);
 	}
 	
 	@Override
-	public Coordinates getPreviousPosition() {
+	public Position getPreviousPosition() {
 		return previousPosition;
 	}
 

@@ -17,7 +17,7 @@ public class Board {
 		this.width = width;
 	}
 	
-	public Tile getTile(Coordinates position) {
+	public Tile getTile(Position position) {
 		return tiles[position.getY()][position.getX()];
 	}
 	
@@ -57,7 +57,7 @@ public class Board {
 	
 	public void setRow(int y, Tile[] row) {
 		for (int i = 0; i < row.length; i++) {
-			setTile(new Coordinates(i, y), row[i]);
+			setTile(new Position(i, y), row[i]);
 		}
 	}
 	
@@ -71,16 +71,16 @@ public class Board {
 	
 	public void setCol(int x, Tile[] col) {
 		for (int i = 0; i < col.length; i++) {
-			setTile(new Coordinates(x, i), col[i]);
+			setTile(new Position(x, i), col[i]);
 		}
 	}
 	
-	private void setTile(Coordinates position, Tile tile) {
+	private void setTile(Position position, Tile tile) {
 		tiles[position.getY()][position.getX()] = tile;
 		//tile.setPostion(position);
 	}
 	
-	public boolean isEmptyTile(Coordinates position) {
+	public boolean isEmptyTile(Position position) {
 		return tiles[position.getY()][position.getX()] == null;
 	}
 	
@@ -96,14 +96,14 @@ public class Board {
 		return height;
 	}
 	
-	public void addTile(Coordinates position, Tile tile) {
+	public void addTile(Position position, Tile tile) {
 		if (!isEmptyTile(position)) {
 			throw new IllegalStateException("Cannot add tile in occupied location");
 		}
 		setTile(position, tile);
 	}
 	
-	public void removeTile(Coordinates position) {
+	public void removeTile(Position position) {
 		if (isEmptyTile(position)) {
 			throw new IllegalStateException("Cannot remove tile that doesn't exist");
 		}
@@ -112,7 +112,7 @@ public class Board {
 	}
 	
 	public void removeTile(Tile tile) {
-		Coordinates position = getPositionOfTile(tile);
+		Position position = getPositionOfTile(tile);
 		removeTile(position);
 	}
 	
@@ -134,10 +134,10 @@ public class Board {
 		return getHeight()*getWidth() - getNumberOfTiles();
 	}
 	
-	public Coordinates getPositionOfTile(Tile tile) {		
+	public Position getPositionOfTile(Tile tile) {		
 		for (int x = 0; x < getWidth(); x++) {
 			for (int y = 0; y < getHeight(); y++) {
-				Coordinates position = new Coordinates(x, y);
+				Position position = new Position(x, y);
 				if (getTile(position) == tile) {
 					return position;
 				}
@@ -147,11 +147,11 @@ public class Board {
 		throw new IllegalArgumentException("This tile is not on the board");
 	}
 	
-	public List<Coordinates> getEmptyPositions() {
-		List<Coordinates> emptyPositions = new ArrayList<Coordinates>();
+	public List<Position> getEmptyPositions() {
+		List<Position> emptyPositions = new ArrayList<Position>();
 		for (int x = 0; x < getWidth(); x++) {
 			for (int y = 0; y < getHeight(); y++) {
-				Coordinates position = new Coordinates(x,y);
+				Position position = new Position(x,y);
 				if (isEmptyTile(position)) {
 					emptyPositions.add(position);
 				}

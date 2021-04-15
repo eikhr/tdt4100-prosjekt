@@ -32,7 +32,7 @@ public class Game {
 		return score;
 	}
 	
-	public Tile getTile(Coordinates position) {
+	public Tile getTile(Position position) {
 		return board.getTile(position);
 	}
 	
@@ -40,7 +40,7 @@ public class Game {
 		return board.getNumberOfTiles();
 	}
 	
-	public boolean boardPositionHasTile(Coordinates position) {
+	public boolean boardPositionHasTile(Position position) {
 		return !board.isEmptyTile(position);
 	}
 	
@@ -65,7 +65,7 @@ public class Game {
 		
 		for (int x = 0; x < board.getWidth(); x++) {
 			for (int y = 0; y < board.getHeight(); y++) {
-				Coordinates position = new Coordinates(x,y);
+				Position position = new Position(x,y);
 				if (!board.isEmptyTile(position)) {
 					Tile tile = board.getTile(position);
 					tile.setPrevious(position);
@@ -166,7 +166,7 @@ public class Game {
 		// horizontally
 		for (int x = 0; x < board.getWidth()-1; x++) {
 			for (int y = 0; y < board.getHeight(); y++) {
-				if (board.getTile(new Coordinates(x, y)).canMergeWith(board.getTile(new Coordinates(x+1, y))))
+				if (board.getTile(new Position(x, y)).canMergeWith(board.getTile(new Position(x+1, y))))
 					return true;
 			}
 		}
@@ -174,7 +174,7 @@ public class Game {
 		// vertically
 		for (int x = 0; x < board.getWidth(); x++) {
 			for (int y = 0; y < board.getHeight()-1; y++) {
-				if (board.getTile(new Coordinates(x, y)).canMergeWith(board.getTile(new Coordinates(x, y+1))))
+				if (board.getTile(new Position(x, y)).canMergeWith(board.getTile(new Position(x, y+1))))
 					return true;
 			}
 		}
@@ -252,7 +252,7 @@ public class Game {
 
 	// adds a random tile in a random empty spot
 	private void addRandomTile() {
-		List<Coordinates> emptyPositions = board.getEmptyPositions();
+		List<Position> emptyPositions = board.getEmptyPositions();
 		
 		if (emptyPositions.isEmpty()) {
 			throw new IllegalStateException("No empty positions to place new tile in!");
@@ -260,14 +260,14 @@ public class Game {
 		
 		// choose a random position
 		Random random = new Random();
-		Coordinates position = emptyPositions.get(random.nextInt(emptyPositions.size()));
+		Position position = emptyPositions.get(random.nextInt(emptyPositions.size()));
 		
 		// add the tile
 		addRandomTile(position);
 	}
 	
 	// adds a random tile in the specified location (either a 2 or a 4)
-	private void addRandomTile(Coordinates position) {
+	private void addRandomTile(Position position) {
 		Random random = new Random();
 		if (random.nextInt(5) == 0) {
 			board.addTile(position, new Tile(board, 2));

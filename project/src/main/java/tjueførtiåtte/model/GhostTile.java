@@ -3,7 +3,7 @@ package tjueførtiåtte.model;
 public class GhostTile implements RenderableTile {
 	private Tile mergedInto;
 	
-	private Coordinates previousPosition;
+	private Position previousPosition;
 	
 	private int previousTier;
 	
@@ -14,12 +14,12 @@ public class GhostTile implements RenderableTile {
 	}
 	
 	@Override
-	public Coordinates getPosition() {
+	public Position getPosition() {
 		return mergedInto.getPosition();
 	}
 
 	@Override
-	public Coordinates getPreviousPosition() {
+	public Position getPreviousPosition() {
 		return previousPosition;
 	}
 

@@ -5,13 +5,13 @@ public interface RenderableTile {
 	 * Gets the position of the tile.
 	 * @return The Coordinates for the tile's position.
 	 */
-	public Coordinates getPosition();
+	public Position getPosition();
 
 	/**
 	 * Gets the position where the tile was the previous turn.
 	 * @return The Coordinates for the tile's previous position.
 	 */
-	public Coordinates getPreviousPosition();
+	public Position getPreviousPosition();
 	
 	/**
 	 * Gets the tier of the tile.

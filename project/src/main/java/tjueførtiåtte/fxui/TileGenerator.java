@@ -12,7 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
-import tjueførtiåtte.model.Coordinates;
+import tjueførtiåtte.model.Position;
 import tjueførtiåtte.model.Game;
 import tjueførtiåtte.model.RenderableTile;
 
@@ -107,8 +107,8 @@ public class TileGenerator {
 	}
 	
 	private Label generateTileNode(RenderableTile tile, double size, boolean animate) {
-		Coordinates pos = tile.getPosition();
-		Coordinates from = tile.getPreviousPosition();
+		Position pos = tile.getPosition();
+		Position from = tile.getPreviousPosition();
 		
 		double posX = (pos.getX()+1)*padding + pos.getX()*size;
 		double posY = (pos.getY()+1)*padding + pos.getY()*size;
