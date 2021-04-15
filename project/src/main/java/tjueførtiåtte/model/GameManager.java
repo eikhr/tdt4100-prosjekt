@@ -1,6 +1,6 @@
 package tjueførtiåtte.model;
 
-public class GameManager {
+public class GameManager implements GameScoreListener{
 	private int highScore;
 	private Game game;
 	
@@ -10,7 +10,12 @@ public class GameManager {
 	}
 	
 	public void startNewGame() {
-		game = new Game(this);
+		// remove old score listener from previous game
+		if (game != null) {
+			game.removeScoreListener(this);
+		}
+		
+		game.addScoreListener(this);
 	}
 	
 	public int getHighScore() {
@@ -21,7 +26,7 @@ public class GameManager {
 		return game;
 	}
 	
-	public void onScoreUpdated() {
+	public void gameScoreUpdated(int newScore) {
 		int score = game.getScore();
 		if (score > highScore) {
 			highScore = score;

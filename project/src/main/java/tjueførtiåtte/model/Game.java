@@ -8,13 +8,11 @@ public class Game {
 	private GameState state = GameState.ONGOING;
 	private Board board;
 	private int score = 0;
-	private GameManager manager;
 	private List<GhostTile> ghostTiles = new ArrayList<GhostTile>();
+	private List<GameScoreListener> scoreListeners = new ArrayList<GameScoreListener>();
 	
 	
-	public Game(GameManager manager) {
-		this.manager = manager;
-		
+	public Game() {		
 		board = new Board(4,4);
 		
 		addRandomTile();
@@ -117,7 +115,7 @@ public class Game {
 		if (hasMoved) {
 			// after moving we add a new tile and notify manager of potential score update
 			addRandomTile();
-			manager.onScoreUpdated();
+			fireScoreUpdated();
 			updateGameState();
 		} else {
 			// Do literally nothing
@@ -275,5 +273,19 @@ public class Game {
 	
 	public String toString() {
 		return board.toString();
+	}
+	
+	public void fireScoreUpdated() {
+		for (GameScoreListener listener : scoreListeners) {
+			listener.gameScoreUpdated(getScore());
+		}
+	}
+	
+	public void addScoreListener(GameScoreListener listener) {
+		scoreListeners.add(listener);
+	}
+	
+	public void removeScoreListener(GameScoreListener listener) {
+		scoreListeners.remove(listener);
 	}
 }
