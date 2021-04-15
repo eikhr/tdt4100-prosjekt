@@ -107,17 +107,17 @@ public class TileGenerator {
 	}
 	
 	private Label generateTileNode(RenderableTile tile, double size, boolean animate) {
-		Position pos = tile.getPosition();
-		Position from = tile.getPreviousPosition();
+		Position position = tile.getPosition();
+		Position previousPosition = tile.getPreviousPosition();
 		
-		double posX = (pos.getX()+1)*padding + pos.getX()*size;
-		double posY = (pos.getY()+1)*padding + pos.getY()*size;
+		double posX = (position.getX()+1)*padding + position.getX()*size;
+		double posY = (position.getY()+1)*padding + position.getY()*size;
 		
 		double fromPosX;
 		double fromPosY;
-		if (from != null) {
-			fromPosX = (from.getX()+1)*padding + from.getX()*size;
-			fromPosY = (from.getY()+1)*padding + from.getY()*size;
+		if (previousPosition != null) {
+			fromPosX = (previousPosition.getX()+1)*padding + previousPosition.getX()*size;
+			fromPosY = (previousPosition.getY()+1)*padding + previousPosition.getY()*size;
 		} else {
 			fromPosX = posX;
 			fromPosY = posY;
