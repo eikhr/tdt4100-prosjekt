@@ -12,7 +12,7 @@ public class GhostTile extends Tile {
 	}
 	
 	@Override
-	public Coords getPosition() {
+	public Coordinates getPosition() {
 		return mergedInto.getPosition();
 	}
 }

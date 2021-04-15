@@ -13,7 +13,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
-import tjueførtiåtte.model.Coords;
+import tjueførtiåtte.model.Coordinates;
 import tjueførtiåtte.model.Game;
 import tjueførtiåtte.model.GhostTile;
 import tjueførtiåtte.model.Tile;
@@ -67,7 +67,7 @@ public class TileGenerator {
 		
 		// create all ghost tiles
 		for (GhostTile tile : game.getGhostTiles()) {
-			Coords pos = tile.getPosition();
+			Coordinates pos = tile.getPosition();
 			
 			double xPos = (pos.getX()+1)*padding + pos.getX()*tileSize;
 			double yPos = (pos.getY()+1)*padding + pos.getY()*tileSize;
@@ -115,7 +115,7 @@ public class TileGenerator {
 	}
 	
 	private Label generateTile(double posX, double posY, double size, double padding, Tile tile) {
-		Coords from = tile.getPreviousPosition();
+		Coordinates from = tile.getPreviousPosition();
 		
 		double fromPosX;
 		double fromPosY;

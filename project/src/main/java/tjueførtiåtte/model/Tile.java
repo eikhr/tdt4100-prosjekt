@@ -4,7 +4,7 @@ public class Tile {
 	protected int tier;
 	protected int previousTier = 0;
 	protected Board board;
-	protected Coords previousPosition;
+	protected Coordinates previousPosition;
 	
 	public Tile(Board board, int tier) {
 		this.board = board;
@@ -12,7 +12,7 @@ public class Tile {
 		this.tier = tier;
 	}
 	
-	public void setPrevious(Coords position) {
+	public void setPrevious(Coordinates position) {
 		previousPosition = position;
 		previousTier = tier;
 	}
@@ -25,7 +25,7 @@ public class Tile {
 		return previousTier;
 	}
 	
-	public Coords getPreviousPosition() {
+	public Coordinates getPreviousPosition() {
 		return previousPosition;
 	}
 
@@ -38,7 +38,7 @@ public class Tile {
 		}
 	}
 	
-	public Coords getPosition() {
+	public Coordinates getPosition() {
 		return board.getPositionOfTile(this);
 	}
 	

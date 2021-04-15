@@ -62,7 +62,7 @@ public class Game {
 			for (int y = 0; y < board.getHeight(); y++) {
 				if (!board.isEmptyTile(x, y)) {
 					Tile tile = board.getTile(x, y);
-					Coords coords = new Coords(x, y);
+					Coordinates coords = new Coordinates(x, y);
 					tile.setPrevious(coords);
 				}
 			}
