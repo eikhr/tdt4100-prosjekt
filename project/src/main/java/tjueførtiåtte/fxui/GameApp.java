@@ -16,6 +16,8 @@ public class GameApp extends Application {
 		Parent parent = loader.load();
 		primaryStage.setTitle("Tjueførtiåtte");
 		primaryStage.setScene(new Scene(parent));
+		primaryStage.minHeightProperty().set(630);
+		primaryStage.minWidthProperty().set(480);
 		primaryStage.heightProperty().addListener((obs, oldVal, newVal) -> controller.updateUI(true));
 		primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> controller.updateUI(true));
 		primaryStage.show();

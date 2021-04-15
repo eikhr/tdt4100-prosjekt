@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="300.0" minWidth="200.0" prefHeight="600.0" prefWidth="480.0" style="-fx-background-color: #FAF8EF;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane minHeight="600.0" minWidth="480.0" prefHeight="600.0" prefWidth="480.0" style="-fx-background-color: #FAF8EF;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <StackPane prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
