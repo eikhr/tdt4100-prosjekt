@@ -3,16 +3,19 @@ package tjueførtiåtte.model;
 public class Tile implements RenderableTile {
 	private int tier;
 	private int previousTier = 0;
-	private Board board;
+	private Position position;
 	private Position previousPosition;
 	
-	public Tile(Board board, int tier) {
-		this.board = board;
+	public Tile(int tier) {
 		this.validateTier(tier);
 		this.tier = tier;
 	}
 	
-	public void setPrevious(Position position) {
+	public void setPosition(Position position) {
+		this.position = position;
+	}
+	
+	public void startNewTurn() {
 		previousPosition = position;
 		previousTier = tier;
 	}
@@ -45,7 +48,7 @@ public class Tile implements RenderableTile {
 		return neighbors;
 	}*/
 
-	public void increaseValue() {
+	public void increaseTier() {
 		tier++;
 	}
 	
@@ -59,7 +62,7 @@ public class Tile implements RenderableTile {
 	
 	@Override
 	public Position getPosition() {
-		return board.getPositionOfTile(this);
+		return position;
 	}
 	
 	@Override

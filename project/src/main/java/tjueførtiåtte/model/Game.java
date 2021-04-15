@@ -63,14 +63,8 @@ public class Game {
 			throw new IllegalStateException("Cannot move while game state is not ongoing or continued");
 		}
 		
-		for (int x = 0; x < board.getWidth(); x++) {
-			for (int y = 0; y < board.getHeight(); y++) {
-				Position position = new Position(x,y);
-				if (!board.isEmptyTile(position)) {
-					Tile tile = board.getTile(position);
-					tile.setPrevious(position);
-				}
-			}
+		for (Tile tile : board.getTiles()) {
+			tile.startNewTurn();
 		}
 
 		boolean reverse = false;
@@ -232,9 +226,9 @@ public class Game {
 				break;
 			if (previous != null && tile.canMergeWith(previous)) {
 				// "merge" with the previous tile by increasing its value, and not adding this one
-				previous.increaseValue();
-				score += previous.getScoreValue();
+				previous.increaseTier();
 				ghostTiles.add(new GhostTile(tile, previous));
+				score += previous.getScoreValue();
 				previous = null;
 			} else {
 				previous = tile;
@@ -270,9 +264,9 @@ public class Game {
 	private void addRandomTile(Position position) {
 		Random random = new Random();
 		if (random.nextInt(5) == 0) {
-			board.addTile(position, new Tile(board, 2));
+			board.addTile(position, new Tile( 2));
 		} else {
-			board.addTile(position, new Tile(board, 1));
+			board.addTile(position, new Tile( 1));
 		}
 	}
 	

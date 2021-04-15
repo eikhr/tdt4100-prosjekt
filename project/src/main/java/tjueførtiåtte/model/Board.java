@@ -57,7 +57,11 @@ public class Board {
 	
 	public void setRow(int y, Tile[] row) {
 		for (int i = 0; i < row.length; i++) {
-			setTile(new Position(i, y), row[i]);
+			if (row[i] != null) {
+				setTile(new Position(i, y), row[i]);
+			} else {
+				tiles[y][i] = null;
+			}
 		}
 	}
 	
@@ -71,13 +75,17 @@ public class Board {
 	
 	public void setCol(int x, Tile[] col) {
 		for (int i = 0; i < col.length; i++) {
-			setTile(new Position(x, i), col[i]);
+			if (col[i] != null) {
+				setTile(new Position(x, i), col[i]);
+			} else {
+				tiles[i][x] = null;
+			}
 		}
 	}
 	
 	private void setTile(Position position, Tile tile) {
 		tiles[position.getY()][position.getX()] = tile;
-		//tile.setPostion(position);
+		tile.setPosition(position);
 	}
 	
 	public boolean isEmptyTile(Position position) {
@@ -107,7 +115,7 @@ public class Board {
 		if (isEmptyTile(position)) {
 			throw new IllegalStateException("Cannot remove tile that doesn't exist");
 		}
-		//tiles[position.getY()][position.getX()].setPosition(null);
+		tiles[position.getY()][position.getX()].setPosition(null);
 		tiles[position.getY()][position.getX()] = null;
 	}
 	
