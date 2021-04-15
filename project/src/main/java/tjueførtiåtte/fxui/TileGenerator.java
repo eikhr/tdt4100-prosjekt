@@ -1,8 +1,7 @@
 package tjueførtiåtte.fxui;
 
 import java.util.ArrayList;
-import java.util.List;
-
+import java.util.Collection;
 import javafx.animation.ScaleTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
@@ -15,8 +14,7 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 import tjueførtiåtte.model.Coordinates;
 import tjueførtiåtte.model.Game;
-import tjueførtiåtte.model.GhostTile;
-import tjueførtiåtte.model.Tile;
+import tjueførtiåtte.model.RenderableTile;
 
 public class TileGenerator {
 	private static String tileColors[] = new String[] {
@@ -40,67 +38,61 @@ public class TileGenerator {
 	private Game game;
 	private double containerWidth;
 	private double containerHeight;
-	private boolean animate;
+	private double tileSize;
+	private Collection<Node> backgroundTiles;
+	private static double padding = 10;
 	
-	public TileGenerator(Game game, double containerWidth, double containerHeight, boolean animate) {
+	public TileGenerator(Game game, double containerWidth, double containerHeight) {
 		this.game = game;
 		this.containerWidth = containerWidth;
 		this.containerHeight = containerHeight;
-		this.animate = animate;
+		this.tileSize = getTileSize();
+		this.backgroundTiles = generateBackgroundTiles();
+	}
+
+	public Collection<Node> getBackgroundTiles() {
+		return backgroundTiles;
 	}
 	
-	public List<Node> generateTiles() {		
-		List<Node> backgroundTiles = new ArrayList<Node>();
-		List<Node> ghostTiles = new ArrayList<Node>();
-		List<Node> tiles = new ArrayList<Node>();
+	public Collection<Node> generateTiles(boolean animate) {		
+		Collection<Node> tiles = new ArrayList<Node>();
+				
+		// create all ghost tiles
+		for (RenderableTile tile : game.getGhostTiles()) {
+			tiles.add(generateTileNode(tile, tileSize, animate));
+		}
 		
-		double padding = 10;
+		// create all real tiles
+		for (RenderableTile tile : game.getTiles()) {
+			tiles.add(generateTileNode(tile, tileSize, animate));
+		}
 		
-		// find the tile size
+		return tiles;
+	}
+	
+	private double getTileSize() {
 		double usableWidth = containerWidth - padding*(game.getBoardWidth()+1);
 		double usableHeight = containerHeight - padding*(game.getBoardHeight()+1);
 		
 		double tileWidth = usableWidth / game.getBoardWidth();
 		double tileHeight = usableHeight / game.getBoardHeight();
 		
-		double tileSize = Math.min(tileWidth, tileHeight);
+		return Math.min(tileWidth, tileHeight);
+	}
+	
+	private Collection<Node> generateBackgroundTiles() {
+		Collection<Node> backgroundTiles = new ArrayList<Node>();
 		
-		// create all ghost tiles
-		for (GhostTile tile : game.getGhostTiles()) {
-			Coordinates pos = tile.getPosition();
-			
-			double xPos = (pos.getX()+1)*padding + pos.getX()*tileSize;
-			double yPos = (pos.getY()+1)*padding + pos.getY()*tileSize;
-
-			Node tileNode = generateTile(xPos, yPos, tileSize, padding, tile);
-			ghostTiles.add(tileNode);
-		}
-		
-		// create all tiles
 		for (int x = 0; x < game.getBoardWidth(); x++) {
 			for (int y = 0; y < game.getBoardHeight(); y++) {
 				double xPos = (x+1)*padding + x*tileSize;
-				double yPos = (y+1)*padding + y*tileSize;
+				double yPos = (y+1)*padding + y*tileSize;			
 				
 				backgroundTiles.add(generateBackgroundTile(xPos, yPos, tileSize));
-				
-				if (game.boardPositionHasTile(x, y)) {
-					Tile tile = game.getTile(x, y);
-					
-					Node tileNode = generateTile(xPos, yPos, tileSize, padding, tile);
-					tiles.add(tileNode);
-				}
 			}
 		}
 		
-
-		List<Node> allTiles = new ArrayList<Node>();
-		allTiles.addAll(backgroundTiles);
-		allTiles.addAll(ghostTiles);
-		allTiles.addAll(tiles);
-		
-		
-		return allTiles;
+		return backgroundTiles;
 	}
 	
 	private Pane generateBackgroundTile(double posX, double posY, double size) {
@@ -114,8 +106,12 @@ public class TileGenerator {
 		return tile;
 	}
 	
-	private Label generateTile(double posX, double posY, double size, double padding, Tile tile) {
+	private Label generateTileNode(RenderableTile tile, double size, boolean animate) {
+		Coordinates pos = tile.getPosition();
 		Coordinates from = tile.getPreviousPosition();
+		
+		double posX = (pos.getX()+1)*padding + pos.getX()*size;
+		double posY = (pos.getY()+1)*padding + pos.getY()*size;
 		
 		double fromPosX;
 		double fromPosY;
@@ -127,8 +123,8 @@ public class TileGenerator {
 			fromPosY = posY;
 		}
 		
-		String text = String.valueOf(tile.getValue());
-		String prevText = String.valueOf(tile.getPreviousValue());
+		String text = tile.getDisplayText();
+		String prevText = tile.getPreviousDisplayText();
 		
 		String color = tileColors[tile.getTier()];
 		String prevColor = tileColors[tile.getPreviousTier()];

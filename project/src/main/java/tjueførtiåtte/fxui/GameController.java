@@ -30,6 +30,8 @@ public class GameController implements HighScoreListener {
 	
 	private final IGameFileReading fileSupport = new GameFileSupport();
 	
+	private TileGenerator tileGenerator;
+	
 	@FXML
 	private void initialize() {
 		int highScore;
@@ -53,7 +55,7 @@ public class GameController implements HighScoreListener {
 	
 	private void onKeepPlayingClick() {
 		gameManager.getGame().continueGame();
-		updateUI(false);
+		updateUI(true);
 		gamePane.requestFocus();
 	}
 	
@@ -96,7 +98,7 @@ public class GameController implements HighScoreListener {
 	private void doMove(KeyEvent keyEvt, Direction direction) {
 		gameManager.getGame().move(direction);
 		keyEvt.consume();
-		updateUI(true);
+		updateUI(false);
 	}
 	
 	@FXML
@@ -104,9 +106,11 @@ public class GameController implements HighScoreListener {
 		gamePane.requestFocus();
 	}
 	
-	public void updateUI(boolean animate) {
+	public void updateUI(boolean resized) {
+		if (resized) tileGenerator = new TileGenerator(gameManager.getGame(), gamePane.getWidth(), gamePane.getHeight());
+		
 		Game game = gameManager.getGame();
-		drawTiles(animate);
+		drawTiles(!resized);
 		scoreText.setText(String.valueOf(game.getScore()));
 		highScoreText.setText(String.valueOf(gameManager.getHighScore()));
 		
@@ -159,11 +163,10 @@ public class GameController implements HighScoreListener {
 	}
 	
 	
-	private void drawTiles(boolean animate) {
-		TileGenerator generator = new TileGenerator(gameManager.getGame(), gamePane.getWidth(), gamePane.getHeight(), animate);
-		
+	private void drawTiles(boolean animate) {		
 		gamePane.getChildren().clear();
-		gamePane.getChildren().addAll(generator.generateTiles());
+		gamePane.getChildren().addAll(tileGenerator.getBackgroundTiles());
+		gamePane.getChildren().addAll(tileGenerator.generateTiles(animate));
 	}
 
 	@Override

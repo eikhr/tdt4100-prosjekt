@@ -1,6 +1,7 @@
 package tjueførtiåtte.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -49,6 +50,10 @@ public class Game {
 	
 	public int getBoardHeight() {
 		return board.getHeight();
+	}
+	
+	public Collection<Tile> getTiles() {
+		return board.getTiles();
 	}
 	
 	// Executes a move in the given direction
@@ -228,7 +233,7 @@ public class Game {
 			if (previous != null && tile.canMergeWith(previous)) {
 				// "merge" with the previous tile by increasing its value, and not adding this one
 				previous.increaseValue();
-				score += previous.getValue();
+				score += previous.getScoreValue();
 				ghostTiles.add(new GhostTile(tile, previous));
 				previous = null;
 			} else {

@@ -1,10 +1,10 @@
 package tjueførtiåtte.model;
 
-public class Tile {
-	protected int tier;
-	protected int previousTier = 0;
-	protected Board board;
-	protected Coordinates previousPosition;
+public class Tile implements RenderableTile {
+	private int tier;
+	private int previousTier = 0;
+	private Board board;
+	private Coordinates previousPosition;
 	
 	public Tile(Board board, int tier) {
 		this.board = board;
@@ -17,18 +17,6 @@ public class Tile {
 		previousTier = tier;
 	}
 	
-	public int getPreviousValue() {
-		return (int) Math.pow(2, previousTier);
-	}
-	
-	public int getPreviousTier() {
-		return previousTier;
-	}
-	
-	public Coordinates getPreviousPosition() {
-		return previousPosition;
-	}
-
 	private void validateTier(int tier) {
 		if (tier < 1) {
 			throw new IllegalArgumentException("Tile tier must be at least 1 (displays as 2)");
@@ -38,9 +26,7 @@ public class Tile {
 		}
 	}
 	
-	public Coordinates getPosition() {
-		return board.getPositionOfTile(this);
-	}
+	
 	
 	/*
 	public Collection<Tile> getNeighbors() {
@@ -58,24 +44,46 @@ public class Tile {
 		
 		return neighbors;
 	}*/
-	
-	public int getTier() {
-		return tier;
-	}
-	
-	public int getValue() {
-		return (int) Math.pow(2, tier);
-	}
-	
-	public String getDisplayText() {
-		return String.valueOf(getValue());
-	}
-	
+
 	public void increaseValue() {
 		tier++;
 	}
 	
 	public boolean canMergeWith(Tile other) {
 		return tier == other.getTier();
+	}
+	
+	public int getScoreValue() {
+		return (int) Math.pow(2, tier);
+	}
+	
+	@Override
+	public Coordinates getPosition() {
+		return board.getPositionOfTile(this);
+	}
+	
+	@Override
+	public Coordinates getPreviousPosition() {
+		return previousPosition;
+	}
+
+	@Override
+	public int getTier() {
+		return tier;
+	}
+	
+	@Override
+	public int getPreviousTier() {
+		return previousTier;
+	}
+
+	@Override
+	public String getDisplayText() {
+		return String.valueOf((int) Math.pow(2, getTier()));
+	}
+	
+	@Override
+	public String getPreviousDisplayText() {
+		return String.valueOf((int) Math.pow(2, getPreviousTier()));
 	}
 }

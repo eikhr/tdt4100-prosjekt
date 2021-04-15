@@ -1,8 +1,10 @@
 package tjueførtiåtte.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class Board {
 	private Tile[][] tiles;
@@ -21,6 +23,17 @@ public class Board {
 	
 	public Iterator<Tile> getIterator() {
 		return new BoardIterator(this);
+	}
+	
+	public Collection<Tile> getTiles() {
+		Collection<Tile> tiles = new ArrayList<Tile>();
+
+		Iterator<Tile> iterator = getIterator();
+		iterator.forEachRemaining(tiles::add);
+		
+		tiles.removeIf(Objects::isNull);
+		
+		return tiles;
 	}
 	
 	public Tile getBestTile() {
