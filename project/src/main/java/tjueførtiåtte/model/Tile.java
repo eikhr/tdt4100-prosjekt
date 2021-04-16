@@ -2,33 +2,38 @@ package tjueførtiåtte.model;
 
 public class Tile implements RenderableTile {
 	private int tier;
-	private int previousTier = 0;
+	private int previousTier;
 	private Position position;
 	private Position previousPosition;
 	
 	public Tile(int tier) {
 		this.validateTier(tier);
 		this.tier = tier;
-	}
-	
-	public void setPosition(Position position) {
-		this.position = position;
-	}
-	
-	public void startNewTurn() {
-		previousPosition = position;
-		previousTier = tier;
+		this.previousTier = tier;
 	}
 	
 	private void validateTier(int tier) {
 		if (tier < 1) {
 			throw new IllegalArgumentException("Tile tier must be at least 1 (displays as 2)");
 		}
-		if (tier > 11) {
-			throw new IllegalArgumentException("Tile tier cannot be larger than 11 (displays as 2048)");
-		}
 	}
 	
+	/*
+	 * Sets the current position of the tile on the board
+	 * @param Position position 
+	 */
+	public void setPosition(Position position) {
+		this.position = position;
+	}
+	
+	/*
+	 * Sets the current position of the tile on the board
+	 * @param Position position 
+	 */
+	public void startNewTurn() {
+		previousPosition = position;
+		previousTier = tier;
+	}
 	
 	
 	/*

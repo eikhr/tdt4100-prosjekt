@@ -48,8 +48,7 @@ public class Board {
 	public Collection<Tile> getTiles() {
 		Collection<Tile> tiles = new ArrayList<Tile>();
 
-		Iterator<Tile> iterator = getIterator();
-		iterator.forEachRemaining(tiles::add);
+		getIterator().forEachRemaining(tiles::add);
 		
 		tiles.removeIf(Objects::isNull);
 		

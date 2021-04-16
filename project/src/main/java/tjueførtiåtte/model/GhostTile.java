@@ -1,5 +1,9 @@
 package tjueførtiåtte.model;
 
+/*
+ * A RenderableTile implementation for tiles that don't exist anymore as they have merged into another tile.
+ * Used for rendering the animation of the tile merging.
+ */
 public class GhostTile implements RenderableTile {
 	private Tile mergedInto;
 	
