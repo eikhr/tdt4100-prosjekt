@@ -71,10 +71,14 @@ public class Board {
 	}
 	
 	public Tile[] getRow(int y) {
+		validateRowIndex(y);
+		
 		return tiles[y];
 	}
 	
 	public void setRow(int y, Tile[] row) {
+		validateRowIndex(y);
+		
 		for (int i = 0; i < row.length; i++) {
 			if (row[i] != null) {
 				setTile(new Position(this, i, y), row[i]);
@@ -85,6 +89,8 @@ public class Board {
 	}
 	
 	public Tile[] getCol(int x) {
+		validateColumnIndex(x);
+		
 		Tile col[] = new Tile[getHeight()];
 		for (int i = 0; i < tiles.length; i++) {
 			col[i] = tiles[i][x];
@@ -93,12 +99,26 @@ public class Board {
 	}
 	
 	public void setCol(int x, Tile[] col) {
+		validateColumnIndex(x);
+		
 		for (int i = 0; i < col.length; i++) {
 			if (col[i] != null) {
 				setTile(new Position(this, x, i), col[i]);
 			} else {
 				tiles[i][x] = null;
 			}
+		}
+	}
+	
+	private void validateRowIndex(int index) {
+		if (index < 0 || index >= getHeight()) {
+			throw new IllegalArgumentException("Row "+index+" doesn't exist on the board");
+		}
+	}
+	
+	private void validateColumnIndex(int index) {
+		if (index < 0 || index >= getWidth()) {
+			throw new IllegalArgumentException("Column "+index+" doesn't exist on the board");
 		}
 	}
 	
