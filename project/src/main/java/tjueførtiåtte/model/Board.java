@@ -159,8 +159,7 @@ public class Board {
 	}
 	
 	public void removeTile(Tile tile) {
-		Position position = getPositionOfTile(tile);
-		removeTile(position);
+		removeTile(tile.getPosition());
 	}
 	
 	public int getNumberOfTiles() {
@@ -179,19 +178,6 @@ public class Board {
 	
 	public int getNumberOfEmptyPositions() {
 		return getHeight()*getWidth() - getNumberOfTiles();
-	}
-	
-	public Position getPositionOfTile(Tile tile) {		
-		for (int x = 0; x < getWidth(); x++) {
-			for (int y = 0; y < getHeight(); y++) {
-				Position position = new Position(this, x, y);
-				if (getTile(position) == tile) {
-					return position;
-				}
-			}
-		}
-		
-		throw new IllegalArgumentException("This tile is not on the board");
 	}
 	
 	public List<Position> getEmptyPositions() {
