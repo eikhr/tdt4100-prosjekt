@@ -160,7 +160,7 @@ public class Game {
 		// horizontally
 		for (int x = 0; x < board.getWidth()-1; x++) {
 			for (int y = 0; y < board.getHeight(); y++) {
-				if (board.getTile(new Position(x, y)).canMergeWith(board.getTile(new Position(x+1, y))))
+				if (board.getTile(x, y).canMergeWith(board.getTile(x+1, y)))
 					return true;
 			}
 		}
@@ -168,7 +168,7 @@ public class Game {
 		// vertically
 		for (int x = 0; x < board.getWidth(); x++) {
 			for (int y = 0; y < board.getHeight()-1; y++) {
-				if (board.getTile(new Position(x, y)).canMergeWith(board.getTile(new Position(x, y+1))))
+				if (board.getTile(x, y).canMergeWith(board.getTile(x, y+1)))
 					return true;
 			}
 		}
