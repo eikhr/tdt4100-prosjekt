@@ -115,6 +115,7 @@ public class TileGenerator {
 		
 		double fromPosX;
 		double fromPosY;
+		
 		if (previousPosition != null) {
 			fromPosX = (previousPosition.getX()+1)*padding + previousPosition.getX()*size;
 			fromPosY = (previousPosition.getY()+1)*padding + previousPosition.getY()*size;
@@ -133,7 +134,6 @@ public class TileGenerator {
 		boolean prevDarkText = tile.getPreviousTier() < 3;
 		
 		
-		
 		Label tileNode = new Label();
 		tileNode.setText(text); // gets changed to "text" after movement animation
 		tileNode.setStyle("-fx-background-color: "+color+"; -fx-background-radius: 10;");
@@ -150,8 +150,6 @@ public class TileGenerator {
 			tileNode.setStyle("-fx-background-color: "+prevColor+"; -fx-background-radius: 10;");
 			tileNode.setTextFill(prevDarkText ? Color.BLACK : Color.WHITE);
 			
-			
-			
 			TranslateTransition movementTransition = new TranslateTransition(Duration.millis(120), tileNode);
 			movementTransition.setCycleCount(1);
 			movementTransition.setOnFinished(event -> {
@@ -161,7 +159,7 @@ public class TileGenerator {
 				tileNode.setTextFill(darkText ? Color.BLACK : Color.WHITE);
 			});
 			
-			if (prevText.equals("1")) {
+			if (previousPosition == null) {
 				// the tile did not exist before, it should only be shown after the movement transition
 				tileNode.setOpacity(0);
 			}
