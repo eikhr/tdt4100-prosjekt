@@ -10,7 +10,7 @@ public class GameManager implements GameScoreListener{
 	private Collection<HighScoreListener> highScoreListeners = new ArrayList<HighScoreListener>();
 	
 	public GameManager(int loadedHighScore) {
-		highScore = loadedHighScore; // TODO: load high score from persistent storage
+		highScore = loadedHighScore;
 		startNewGame();
 	}
 	
@@ -39,9 +39,8 @@ public class GameManager implements GameScoreListener{
 	}
 	
 	public void gameScoreUpdated(int newScore) {
-		int score = game.getScore();
-		if (score > highScore) {
-			updateHighScore(score);
+		if (newScore > highScore) {
+			updateHighScore(newScore);
 		}
 	}
 	
