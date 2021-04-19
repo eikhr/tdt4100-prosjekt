@@ -132,7 +132,7 @@ public class Board {
 	}
 	
 	public boolean containsPosition(int x, int y) {
-		return x >= 0 && x < 4 && y >= 0 && y < 4;
+		return x >= 0 && x < getWidth() && y >= 0 && y < getHeight();
 	}
 	
 	public int getWidth() {
