@@ -6,9 +6,9 @@ import java.io.OutputStream;
 
 public interface IGameFileReading {
 	/**
-	 * Read a TodoList from a given InputStream.
+	 * Read a high score from a given InputStream.
 	 * @param ios The input stream to read from.
-	 * @return The TodoList from the InputStream.
+	 * @return The high score from the InputStream.
 	 */
 	Integer readHighScore(InputStream is);
 	/**

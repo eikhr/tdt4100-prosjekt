@@ -40,8 +40,8 @@ public class GameFileSupport implements IGameFileReading {
     }
 
     public Integer readHighScore() throws IOException {
-        var todoListPath = getHighScorePath();
-        try (var input = new FileInputStream(todoListPath.toFile())) {
+        var highScorePath = getHighScorePath();
+        try (var input = new FileInputStream(highScorePath.toFile())) {
             return readHighScore(input);
         }
     }
@@ -53,9 +53,9 @@ public class GameFileSupport implements IGameFileReading {
     }
 
     public void writeHighScore(Integer highScore) throws IOException {
-        var todoListPath = getHighScorePath();
+        var highScorePath = getHighScorePath();
         ensureGameUserFolder();
-        try (var output = new FileOutputStream(todoListPath.toFile())) {
+        try (var output = new FileOutputStream(highScorePath.toFile())) {
         	writeHighScore(highScore, output);
         }
     }
