@@ -12,7 +12,6 @@ public class Game {
 	private List<GhostTile> ghostTiles = new ArrayList<GhostTile>();
 	private List<GameScoreListener> scoreListeners = new ArrayList<GameScoreListener>();
 	
-	
 	public Game() {		
 		board = new Board(4,4);
 		
@@ -30,10 +29,6 @@ public class Game {
 	
 	public int getScore() {
 		return score;
-	}
-	
-	public Tile getTile(Position position) {
-		return board.getTile(position);
 	}
 	
 	public int getNumberOfTiles() {
