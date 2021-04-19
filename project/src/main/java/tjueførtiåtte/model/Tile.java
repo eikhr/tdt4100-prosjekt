@@ -94,4 +94,35 @@ public class Tile implements RenderableTile {
 	public String getPreviousDisplayText() {
 		return String.valueOf((int) Math.pow(2, getPreviousTier()));
 	}
+	
+	public static Tile[] reverseRow(Tile row[]) {
+		if (row == null) throw new IllegalArgumentException("Cannot reverse null row");
+		
+		Tile newRow[] = new Tile[row.length];
+		
+		for (int i = 0; i < row.length; i++) {
+			newRow[i] = row[row.length - 1 - i];
+		}
+		
+		return newRow;
+	}
+	
+	public static boolean areEqualRows(Tile line1[], Tile line2[]) {
+		if (line1 == null || line2 == null) throw new IllegalArgumentException("Cannot compare null rows");
+		if (line1.length != line2.length) throw new IllegalArgumentException("Cannot compare rows of different length");
+		
+		for (int i = 0; i < line1.length; i++) {
+			if (line1[i] == null) {
+				if (line2[i] != null)
+					return false;
+			} else if (line2[i] == null) {
+				if (line1[i] != null)
+					return false;
+			} else {
+				if (line1[i].getTier() != line2[i].getTier())
+					return false;
+			}
+		}
+		return true;
+	}
 }

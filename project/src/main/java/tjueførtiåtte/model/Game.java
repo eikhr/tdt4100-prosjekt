@@ -96,7 +96,7 @@ public class Game {
 				Tile col[] = board.getCol(i);
 				col = moveLine(col, reverse);
 				
-				hasMoved = hasMoved || !equals(col, board.getCol(i));
+				hasMoved = hasMoved || !Tile.areEqualRows(col, board.getCol(i));
 				
 				board.setCol(i, col);
 			}
@@ -105,7 +105,7 @@ public class Game {
 				Tile row[] = board.getRow(i);
 				row = moveLine(row, reverse);
 
-				hasMoved = hasMoved || !equals(row, board.getRow(i));
+				hasMoved = hasMoved || !Tile.areEqualRows(row, board.getRow(i));
 				
 				board.setRow(i, row);
 			}
@@ -176,36 +176,10 @@ public class Game {
 		return false;
 	}
 	
-	private boolean equals(Tile line1[], Tile line2[]) {
-		for (int i = 0; i < line1.length; i++) {
-			if (line1[i] == null) {
-				if (line2[i] != null)
-					return false;
-			} else if (line2[i] == null) {
-				if (line1[i] != null)
-					return false;
-			} else {
-				if (line1[i].getTier() != line2[i].getTier())
-					return false;
-			}
-		}
-		return true;
-	}
-	
-	private Tile[] reverse(Tile line[]) {
-		Tile newLine[] = new Tile[line.length];
-		
-		for (int i = 0; i < line.length; i++) {
-			newLine[i] = line[line.length - 1 - i];
-		}
-		
-		return newLine;
-	}
-	
 	// moves line to beginning of list, and merges any mergeable tiles, adds removed tiles to gostTiles
 	private Tile[] moveLine(Tile[] line, boolean reverse) {
 		if (reverse)
-			line = reverse(line);
+			line = Tile.reverseRow(line);
 		
 		// move all tiles to beginning of list
 		Tile[] shifted = new Tile[line.length];
@@ -239,7 +213,7 @@ public class Game {
 		
 
 		if (reverse)
-			newLine = reverse(newLine);
+			newLine = Tile.reverseRow(newLine);
 		
 		return newLine;
 	}
