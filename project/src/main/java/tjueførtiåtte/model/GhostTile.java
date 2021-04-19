@@ -12,9 +12,16 @@ public class GhostTile implements RenderableTile {
 	private int previousTier;
 	
 	public GhostTile(Tile tile, Tile mergedInto) {
+		validateTile(tile);
+		validateTile(mergedInto);
+		
 		this.mergedInto = mergedInto;
 		previousPosition = tile.getPreviousPosition();
 		previousTier = tile.getPreviousTier();
+	}
+	
+	private void validateTile(Tile tile) {
+		if (tile == null) throw new IllegalArgumentException("Both the tile, and the tile that is merged into must not be null");
 	}
 	
 	@Override
