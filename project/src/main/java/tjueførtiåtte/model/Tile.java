@@ -9,7 +9,7 @@ public class Tile implements RenderableTile {
 	public Tile(int tier) {
 		this.validateTier(tier);
 		this.tier = tier;
-		this.previousTier = tier;
+		this.previousTier = 0;
 	}
 	
 	private void validateTier(int tier) {
