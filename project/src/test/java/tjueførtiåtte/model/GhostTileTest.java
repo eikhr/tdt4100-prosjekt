@@ -28,6 +28,7 @@ public class GhostTileTest {
 		tile2.startNewTurn();
 		tile2.increaseTier(); // simulerer at de blir merget
 		ghostTile = new GhostTile(tile1, tile2);
+		tile2.endTurn();
 	}
 	
 	@Test
