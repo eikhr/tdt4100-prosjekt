@@ -106,6 +106,11 @@ public class Game {
 			}
 		}
 		
+
+		for (Tile tile : board.getTiles()) {
+			tile.endTurn();
+		}
+		
 		if (hasMoved) {
 			// after moving we add a new tile and notify manager of potential score update
 			addRandomTile();

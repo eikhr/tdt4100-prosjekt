@@ -131,7 +131,7 @@ public class Board {
 		return tiles[position.getY()][position.getX()] == null;
 	}
 	
-	public boolean containsPosition(int x, int y) {
+	public boolean containsCoords(int x, int y) {
 		return x >= 0 && x < getWidth() && y >= 0 && y < getHeight();
 	}
 	
@@ -145,7 +145,7 @@ public class Board {
 	
 	public void addTile(Position position, Tile tile) {
 		if (!isEmptyTile(position)) {
-			throw new IllegalStateException("Cannot add tile in occupied location");
+			throw new IllegalArgumentException("Cannot add tile in occupied location");
 		}
 		setTile(position, tile);
 	}

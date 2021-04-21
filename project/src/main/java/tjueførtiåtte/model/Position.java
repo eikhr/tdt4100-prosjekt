@@ -20,7 +20,7 @@ public class Position {
 	}
 	
 	public void validatePosition(Board board, int x, int y) {
-		if (!board.containsPosition(x, y)) {
+		if (!board.containsCoords(x, y)) {
 			throw new IllegalArgumentException("The position "+x+", "+y+" does not exist on the board");
 		}
 	}

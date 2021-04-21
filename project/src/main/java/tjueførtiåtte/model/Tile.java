@@ -5,6 +5,7 @@ public class Tile implements RenderableTile {
 	private int previousTier;
 	private Position position;
 	private Position previousPosition;
+	private boolean turnInProgress;
 	
 	public Tile(int tier) {
 		this.validateTier(tier);
@@ -23,6 +24,10 @@ public class Tile implements RenderableTile {
 	 * @param Position position 
 	 */
 	public void setPosition(Position position) {
+		if (this.position != null && !turnInProgress) {
+			throw new IllegalStateException("Position can only be updated during a turn");
+		}
+		
 		this.position = position;
 	}
 	
@@ -33,6 +38,11 @@ public class Tile implements RenderableTile {
 	public void startNewTurn() {
 		previousPosition = position;
 		previousTier = tier;
+		turnInProgress = true;
+	}
+	
+	public void endTurn() {
+		turnInProgress = false;
 	}
 	
 	
@@ -67,6 +77,7 @@ public class Tile implements RenderableTile {
 	
 	@Override
 	public Position getPosition() {
+		if (turnInProgress) throw new IllegalStateException("Tile position is not accessible while a turn is in progress");
 		return position;
 	}
 	
