@@ -80,10 +80,18 @@ public class TileTest {
 		Board board = new Board(2,2);
 		Position position1 = new Position(board, 0, 1);
 		Position position2 = new Position(board, 1, 1);
+		
+		tile1.startNewTurn();
 		tile1.setPosition(position1);
+		tile1.endTurn();
+		
 		assertEquals(position1, tile1.getPosition());
 		assertNotEquals(position2, tile1.getPosition());
+		
+		tile1.startNewTurn();
 		tile1.setPosition(position2);
+		tile1.endTurn();
+		
 		assertEquals(position2, tile1.getPosition());
 		assertNotEquals(position1, tile1.getPosition());
 	}
@@ -100,18 +108,20 @@ public class TileTest {
 		
 		tile1.setPosition(position2);
 		tile1.increaseTier();
+
+		tile1.endTurn();
 		
 		assertEquals(position1, tile1.getPreviousPosition());
 		assertEquals(1, tile1.getPreviousTier());
 		assertEquals("2", tile1.getPreviousDisplayText());
 
 		tile1.startNewTurn();
+		tile1.endTurn();
 		
 		assertEquals(position2, tile1.getPreviousPosition());
 		assertEquals(2, tile1.getPreviousTier());
 		assertEquals("4", tile1.getPreviousDisplayText());
 	}
-	
 	
 	@SuppressWarnings("unused")
 	@Test
