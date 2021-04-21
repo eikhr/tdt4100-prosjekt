@@ -22,6 +22,13 @@ public class Game {
 		fireTilesMoved();
 	}
 	
+	public Game(String serialized) {
+		String[] parts = serialized.split(";");
+		score = Integer.valueOf(parts[1]);
+ 		board = new Board(parts[2]);
+ 		state = GameState.valueOf(parts[0]);
+	}
+	
 	public GameState getState() {
 		return state;
 	}
@@ -32,10 +39,6 @@ public class Game {
 	
 	public int getScore() {
 		return score;
-	}
-	
-	public int getNumberOfTiles() {
-		return board.getNumberOfTiles();
 	}
 	
 	public boolean boardPositionHasTile(Position position) {
@@ -299,5 +302,9 @@ public class Game {
 
 	public void removeGameStateListener(GameStateListener listener) {
 		gameStateListeners.remove(listener);
+	}
+	
+	public String serialize() {
+		return String.format("%s;%d;%s", state.toString(), score, board.serialize());
 	}
 }

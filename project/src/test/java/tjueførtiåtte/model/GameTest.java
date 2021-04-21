@@ -1,6 +1,7 @@
 package tjueførtiåtte.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collection;
@@ -24,7 +25,7 @@ public class GameTest {
 		assertEquals(GameState.ONGOING, game.getState());
 		assertEquals(4, game.getBoardHeight());
 		assertEquals(4, game.getBoardWidth());
-		assertEquals(2, game.getNumberOfTiles());
+		assertEquals(2, game.getTiles().size());
 		assertTrue(game.getGhostTiles().isEmpty());
 		assertEquals(0, game.getScore());
 		
@@ -162,5 +163,17 @@ public class GameTest {
 			
 			assertTrue(moves < 1000);
 		}
+	}
+
+	@Test
+	@DisplayName("Sjekk at serialisering og deserialisering fungerer")
+	public void testSerialization() {
+		String serialized = game.serialize();
+		
+		Game copy = new Game(serialized);
+		
+		assertEquals(game.getState(), copy.getState());
+		assertEquals(game.getScore(), copy.getScore());
+		assertEquals(game.getTiles().size(), copy.getTiles().size());
 	}
 }

@@ -262,4 +262,31 @@ public class BoardTest {
 	public void testGetBestTile() {
 		assertEquals(tile3, board.getBestTile());
 	}
+	
+	@Test
+	@DisplayName("Sjekk at serialisering og deserialisering fungerer")
+	public void testSerialization() {
+		String serialized = board.serialize();
+		
+		System.out.println(serialized);
+		Board newBoard = new Board(serialized);
+		
+		assertEquals(board.getWidth(), newBoard.getWidth());
+		assertEquals(board.getHeight(), newBoard.getHeight());
+		for (int x = 0; x < board.getWidth(); x++) {
+			for (int y = 0; y < board.getHeight(); y++) {
+				Tile original = board.getTile(x, y);
+				Tile copy = newBoard.getTile(x, y);
+				
+				if (original == null) {
+					assertNull(copy);
+				} else {
+					assertEquals(original.getTier(), copy.getTier());
+					assertEquals(original.getDisplayText(), copy.getDisplayText());
+					assertEquals(original.getPosition().getX(), copy.getPosition().getX());
+					assertEquals(original.getPosition().getY(), copy.getPosition().getY());
+				}
+			}
+		}
+	}
 }

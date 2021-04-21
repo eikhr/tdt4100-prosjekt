@@ -13,6 +13,17 @@ public class Tile implements RenderableTile {
 		this.previousTier = 0;
 	}
 	
+	public Tile(String serialized) {
+		try {
+			int tier = Integer.valueOf(serialized);
+			this.validateTier(tier);
+			this.tier = tier;
+			this.previousTier = 0;
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException("serialized Tile must be a valid number, null Tiles cannot be deserialized");
+		}
+	}
+	
 	private void validateTier(int tier) {
 		if (tier < 1) {
 			throw new IllegalArgumentException("Tile tier must be at least 1 (displays as 2)");
@@ -135,5 +146,11 @@ public class Tile implements RenderableTile {
 			}
 		}
 		return true;
+	}
+	
+	public String serialize() {
+		if (turnInProgress) throw new IllegalStateException("Cannot serialize during a turn");
+		
+		return String.valueOf(tier);
 	}
 }

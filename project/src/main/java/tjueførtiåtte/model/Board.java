@@ -16,6 +16,24 @@ public class Board {
 		this.height = height;
 		this.width = width;
 	}
+	
+	public Board(String serialized) {
+		String[] array = serialized.split(",");
+		width = Integer.valueOf(array[0]);
+		height = Integer.valueOf(array[1]);
+		
+		tiles = new Tile[height][width];
+		
+		for (int i = 2; i < array.length; i++) {
+			int x = (i-2) % width;
+			int y = (i-2) / width;
+			
+			if (!array[i].equals("-")) {
+				tiles[y][x] = new Tile(array[i]);
+				tiles[y][x].setPosition(new Position(this, x, y));
+			}
+		}
+	}
 
 	/*
 	 * Gets the Tile at the specified coordinates
@@ -193,6 +211,26 @@ public class Board {
 		}
 		
 		return emptyPositions;
+	}
+	
+	/*
+	 * Serializes the board in the following format:
+	 * {board width},{board height},{tile in row 0 col 0},{tile in row 0 col 1}, ... ,{tile in row 1 col 0}, ...
+	 */
+	public String serialize() {
+		String serialized = String.format("%d,%d", width, height);
+		
+		Iterator<Tile> iterator = getIterator();
+		while (iterator.hasNext()) {
+			Tile tile = iterator.next();
+			if (tile != null) {
+				serialized = serialized.concat(String.format(",%s", tile.serialize()));
+			} else {
+				serialized = serialized.concat(",-");
+			}
+		}
+		
+		return serialized;
 	}
 	
 	public String toString() {

@@ -163,4 +163,21 @@ public class TileTest {
 		assertThrows(IllegalArgumentException.class, () -> Tile.areEqualRows(null, tileArray1));
 		assertThrows(IllegalArgumentException.class, () -> Tile.areEqualRows(shortTileArray, tileArray1));
 	}
+
+	@Test
+	@DisplayName("Sjekk at serialisering og deserialisering av Tiles fungerer")
+	public void testSerialization() {
+		String serialized1 = tile1.serialize();
+		String serialized2 = tile2.serialize();
+		
+		Tile newTile1 = new Tile(serialized1);
+		Tile newTile2 = new Tile(serialized2);
+		
+		assertEquals(tile1.getTier(), newTile1.getTier());
+		assertEquals(tile2.getTier(), newTile2.getTier());		
+		assertEquals(tile1.getDisplayText(), newTile1.getDisplayText());
+		assertEquals(tile2.getDisplayText(), newTile2.getDisplayText());
+		
+		assertThrows(IllegalArgumentException.class, () -> new Tile("-"));
+	}
 }
