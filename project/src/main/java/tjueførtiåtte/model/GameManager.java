@@ -11,7 +11,6 @@ public class GameManager implements GameScoreListener {
 	
 	public GameManager(int loadedHighScore) {
 		highScore = loadedHighScore;
-		startNewGame();
 	}
 	
 	public void startNewGame() {
@@ -24,12 +23,20 @@ public class GameManager implements GameScoreListener {
 		
 		game.addScoreListener(this);
 	}
+	
+	private void validateGame() {
+		if (game == null) throw new IllegalStateException("No game is started");
+	}
 
 	public void continueGame() {
+		validateGame();
+		
 		game.continueGame();
 	}
 	
 	public void move(Direction direction) {
+		validateGame();
+		
 		if (game.getState() != GameState.ONGOING && game.getState() != GameState.CONTINUED) {
 			throw new IllegalStateException("You can only move while the game is ongoing");
 		}
@@ -38,6 +45,8 @@ public class GameManager implements GameScoreListener {
 	}
 	
 	public Collection<RenderableTile> getTiles() {
+		validateGame();
+		
 		return game.getRenderableTiles();
 	}
 	
@@ -67,10 +76,14 @@ public class GameManager implements GameScoreListener {
 	}
 	
 	public void addGameStateListener(GameStateListener listener) {
+		validateGame();
+		
 		game.addGameStateListener(listener);
 	}
 	
 	public void removeGameStateListener(GameStateListener listener) {
+		validateGame();
+		
 		game.removeGameStateListener(listener);
 	}
 	
