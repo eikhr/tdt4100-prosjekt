@@ -35,15 +35,17 @@ public class TileGenerator {
 		"#171b70"
 	};
 	
-	private Game game;
+	private int gameWidth;
+	private int gameHeight;
 	private double containerWidth;
 	private double containerHeight;
 	private double tileSize;
 	private Collection<Node> backgroundTiles;
 	private static double padding = 10;
 	
-	public TileGenerator(Game game, double containerWidth, double containerHeight) {
-		this.game = game;
+	public TileGenerator(int gameWidth, int gameHeight, double containerWidth, double containerHeight) {
+		this.gameHeight = gameHeight;
+		this.gameWidth = gameWidth;
 		this.containerWidth = containerWidth;
 		this.containerHeight = containerHeight;
 		this.tileSize = getTileSize();
@@ -54,28 +56,23 @@ public class TileGenerator {
 		return backgroundTiles;
 	}
 	
-	public Collection<Node> generateTiles(boolean animate) {		
-		Collection<Node> tiles = new ArrayList<Node>();
+	public Collection<Node> generateTileNodes(Collection<RenderableTile> tiles, boolean animate) {		
+		Collection<Node> nodes = new ArrayList<Node>();
 				
-		// create all ghost tiles
-		for (RenderableTile tile : game.getGhostTiles()) {
-			tiles.add(generateTileNode(tile, tileSize, animate));
+		// create all tile nodes
+		for (RenderableTile tile : tiles) {
+			nodes.add(generateTileNode(tile, tileSize, animate));
 		}
 		
-		// create all real tiles
-		for (RenderableTile tile : game.getTiles()) {
-			tiles.add(generateTileNode(tile, tileSize, animate));
-		}
-		
-		return tiles;
+		return nodes;
 	}
 	
 	private double getTileSize() {
-		double usableWidth = containerWidth - padding*(game.getBoardWidth()+1);
-		double usableHeight = containerHeight - padding*(game.getBoardHeight()+1);
+		double usableWidth = containerWidth - padding*(gameWidth+1);
+		double usableHeight = containerHeight - padding*(gameHeight+1);
 		
-		double tileWidth = usableWidth / game.getBoardWidth();
-		double tileHeight = usableHeight / game.getBoardHeight();
+		double tileWidth = usableWidth / gameWidth;
+		double tileHeight = usableHeight / gameHeight;
 		
 		return Math.min(tileWidth, tileHeight);
 	}
@@ -83,8 +80,8 @@ public class TileGenerator {
 	private Collection<Node> generateBackgroundTiles() {
 		Collection<Node> backgroundTiles = new ArrayList<Node>();
 		
-		for (int x = 0; x < game.getBoardWidth(); x++) {
-			for (int y = 0; y < game.getBoardHeight(); y++) {
+		for (int x = 0; x < gameWidth; x++) {
+			for (int y = 0; y < gameHeight; y++) {
 				double xPos = (x+1)*padding + x*tileSize;
 				double yPos = (y+1)*padding + y*tileSize;			
 				

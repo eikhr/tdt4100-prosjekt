@@ -1,5 +1,5 @@
 package tjueførtiåtte.model;
 
 public interface GameScoreListener {
-	public void gameScoreUpdated(int newScore);
+	public void scoreUpdated(int newScore);
 }

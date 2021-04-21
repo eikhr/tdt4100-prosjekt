@@ -1,5 +1,8 @@
 package tjueførtiåtte.fxui;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -12,12 +15,13 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import tjueførtiåtte.model.Direction;
-import tjueførtiåtte.model.Game;
 import tjueførtiåtte.model.GameManager;
 import tjueførtiåtte.model.GameState;
+import tjueførtiåtte.model.GameStateListener;
 import tjueførtiåtte.model.HighScoreListener;
+import tjueførtiåtte.model.RenderableTile;
 
-public class GameController implements HighScoreListener {
+public class GameController implements HighScoreListener, GameStateListener {
 	private GameManager gameManager;
 	
 	@FXML Pane gamePane;
@@ -32,6 +36,11 @@ public class GameController implements HighScoreListener {
 	
 	private TileGenerator tileGenerator;
 	
+	private Collection<RenderableTile> tiles = new ArrayList<RenderableTile>();
+	
+	private static int gameWidth = 4;
+	private static int gameHeight = 4;
+	
 	@FXML
 	private void initialize() {
 		int highScore;
@@ -43,36 +52,32 @@ public class GameController implements HighScoreListener {
 		
 		gameManager = new GameManager(highScore);
 		gameManager.addHighScoreListener(this);
-		updateUI(true);
+		resizedUI();
+		startNewGame();
 		gamePane.requestFocus();
+	}
+	
+	private void startNewGame() {
+		clearOverlay();
+		gameManager.startNewGame();
+		gameManager.addGameStateListener(this);
+		tilesMoved(gameManager.getTiles());
 	}
 	
 	@FXML
 	private void onNewGameClick() {
-		gameManager.startNewGame();
-		updateUI(true);
-	}
-	
-	private void onKeepPlayingClick() {
-		gameManager.getGame().continueGame();
-		updateUI(true);
+		gameManager.removeGameStateListener(this);
+		startNewGame();
 		gamePane.requestFocus();
 	}
 	
-	@FXML
-	private void onContinueGameClick() {
-		gameManager.getGame().continueGame();
+	private void onKeepPlayingClick() {
+		gameManager.continueGame();
 		gamePane.requestFocus();
 	}
 
 	@FXML
 	private void keyPressed(KeyEvent keyEvt) {
-		Game game = gameManager.getGame();
-		
-		if (game.getState() != GameState.ONGOING && game.getState() != GameState.CONTINUED) {
-			return;
-		}
-		
 		switch (keyEvt.getCode()) {
 		case UP:
 		case W:
@@ -96,9 +101,9 @@ public class GameController implements HighScoreListener {
 	}
 	
 	private void doMove(KeyEvent keyEvt, Direction direction) {
-		gameManager.getGame().move(direction);
+		gameManager.move(direction);
+		// TODO: handle exception
 		keyEvt.consume();
-		updateUI(false);
 	}
 	
 	@FXML
@@ -106,29 +111,13 @@ public class GameController implements HighScoreListener {
 		gamePane.requestFocus();
 	}
 	
-	public void updateUI(boolean resized) {
-		if (resized) tileGenerator = new TileGenerator(gameManager.getGame(), gamePane.getWidth(), gamePane.getHeight());
-		
-		Game game = gameManager.getGame();
-		drawTiles(!resized);
-		scoreText.setText(String.valueOf(game.getScore()));
-		highScoreText.setText(String.valueOf(gameManager.getHighScore()));
-		
-		switch (game.getState()) {
-		case LOST:
-			addOverlay(false);
-			break;
-		case WON:
-			addOverlay(true);
-			break;
-		default:
-			clearOverlay();
-			break;
-		} 
+	public void resizedUI() {
+		tileGenerator = new TileGenerator(gameWidth, gameHeight, gamePane.getWidth(), gamePane.getHeight());
+		drawTiles(false);
 	}
 	
 	// add overlay, either won or lost
-	public void addOverlay(boolean won) {
+	private void addOverlay(boolean won) {
 		overlayPane.getChildren().clear();
 		overlayPane.setStyle(won ? "-fx-background-color: #edc40044; -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(237, 196, 0, 0.8), 40, 0, 0, 0);" : "-fx-background-color: #00000044; -fx-background-radius: 15;");
 		
@@ -157,7 +146,7 @@ public class GameController implements HighScoreListener {
 		overlayPane.add(buttonPane, 0, 1);
 	}
 	
-	public void clearOverlay() {
+	private void clearOverlay() {
 		overlayPane.getChildren().clear();
 		overlayPane.setStyle("");
 	}
@@ -166,16 +155,44 @@ public class GameController implements HighScoreListener {
 	private void drawTiles(boolean animate) {		
 		gamePane.getChildren().clear();
 		gamePane.getChildren().addAll(tileGenerator.getBackgroundTiles());
-		gamePane.getChildren().addAll(tileGenerator.generateTiles(animate));
+		gamePane.getChildren().addAll(tileGenerator.generateTileNodes(tiles, animate));
 	}
 
 	@Override
 	public void highScoreUpdated(int newHighScore) {
 		try {
 			fileSupport.writeHighScore(newHighScore);
+			highScoreText.setText(String.valueOf(newHighScore));
+			throw new IllegalArgumentException("test");
 		} catch (Throwable e) {
-			// TODO: do something?
+			highScoreText.setText("Save error");
 		}
 		
+	}
+
+	@Override
+	public void stateUpdated(GameState newState) {
+		switch (newState) {
+		case LOST:
+			addOverlay(false);
+			break;
+		case WON:
+			addOverlay(true);
+			break;
+		default:
+			clearOverlay();
+			break;
+		} 
+	}
+
+	@Override
+	public void tilesMoved(Collection<RenderableTile> updatedTiles) {
+		tiles = updatedTiles;
+		drawTiles(true);
+	}
+
+	@Override
+	public void scoreUpdated(int newScore) {
+		scoreText.setText(String.valueOf(newScore));
 	}
 }

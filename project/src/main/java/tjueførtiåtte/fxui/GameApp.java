@@ -18,8 +18,8 @@ public class GameApp extends Application {
 		primaryStage.setScene(new Scene(parent));
 		primaryStage.minHeightProperty().set(630);
 		primaryStage.minWidthProperty().set(480);
-		primaryStage.heightProperty().addListener((obs, oldVal, newVal) -> controller.updateUI(true));
-		primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> controller.updateUI(true));
+		primaryStage.heightProperty().addListener((obs, oldVal, newVal) -> controller.resizedUI());
+		primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> controller.resizedUI());
 		primaryStage.show();
 	}
 

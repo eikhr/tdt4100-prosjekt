@@ -11,12 +11,15 @@ public class Game {
 	private int score = 0;
 	private List<GhostTile> ghostTiles = new ArrayList<GhostTile>();
 	private List<GameScoreListener> scoreListeners = new ArrayList<GameScoreListener>();
+	private List<GameStateListener> gameStateListeners = new ArrayList<GameStateListener>();
 	
 	public Game() {		
 		board = new Board(4,4);
 		
 		addRandomTile();
 		addRandomTile();
+		
+		fireTilesMoved();
 	}
 	
 	public GameState getState() {
@@ -49,6 +52,13 @@ public class Game {
 	
 	public Collection<Tile> getTiles() {
 		return board.getTiles();
+	}
+	
+	public Collection<RenderableTile> getRenderableTiles() {
+		Collection<RenderableTile> tiles = new ArrayList<RenderableTile>();
+		tiles.addAll(board.getTiles());
+		tiles.addAll(getGhostTiles());
+		return tiles;
 	}
 	
 	// Executes a move in the given direction
@@ -112,10 +122,12 @@ public class Game {
 		}
 		
 		if (hasMoved) {
-			// after moving we add a new tile and notify manager of potential score update
+			// after moving we add a new tile and fire change events
 			addRandomTile();
+			
 			fireScoreUpdated();
 			updateGameState();
+			fireTilesMoved();
 		} else {
 			// Do literally nothing
 			// System.out.println("didn't move");
@@ -126,11 +138,14 @@ public class Game {
 		// if we are playing normally and have won :D
 		if (state == GameState.ONGOING && isWon()) {
 			state = GameState.WON;
+			fireGameStateUpdated();
 			return;
 		} 
 		// if we have lost :(
 		if (state != GameState.LOST && isLost()) {
 			state = GameState.LOST;
+			fireGameStateUpdated();
+			return;
 		}
 	}
 	
@@ -141,6 +156,7 @@ public class Game {
 		}
 		
 		state = GameState.CONTINUED;
+		fireGameStateUpdated();
 	}
 	
 	private boolean isWon() {
@@ -248,9 +264,12 @@ public class Game {
 		return board.toString();
 	}
 	
-	public void fireScoreUpdated() {
+	private void fireScoreUpdated() {
 		for (GameScoreListener listener : scoreListeners) {
-			listener.gameScoreUpdated(getScore());
+			listener.scoreUpdated(getScore());
+		}
+		for (GameStateListener listener : gameStateListeners) {
+			listener.scoreUpdated(getScore());
 		}
 	}
 	
@@ -260,5 +279,25 @@ public class Game {
 	
 	public void removeScoreListener(GameScoreListener listener) {
 		scoreListeners.remove(listener);
+	}
+	
+	private void fireGameStateUpdated() {
+		for (GameStateListener listener : gameStateListeners) {
+			listener.stateUpdated(getState());
+		}
+	}
+
+	private void fireTilesMoved() {
+		for (GameStateListener listener : gameStateListeners) {
+			listener.tilesMoved(getRenderableTiles());
+		}
+	}
+	
+	public void addGameStateListener(GameStateListener listener) {
+		gameStateListeners.add(listener);
+	}
+
+	public void removeGameStateListener(GameStateListener listener) {
+		gameStateListeners.remove(listener);
 	}
 }
