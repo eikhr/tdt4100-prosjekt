@@ -52,6 +52,7 @@ public class GameController implements HighScoreListener, GameStateListener {
 		
 		gameManager = new GameManager(highScore);
 		gameManager.addHighScoreListener(this);
+		highScoreUpdated(highScore);
 		resizedUI();
 		startNewGame();
 		gamePane.requestFocus();
@@ -59,6 +60,7 @@ public class GameController implements HighScoreListener, GameStateListener {
 	
 	private void startNewGame() {
 		clearOverlay();
+		scoreUpdated(0);
 		gameManager.startNewGame();
 		gameManager.addGameStateListener(this);
 		tilesMoved(gameManager.getTiles());
@@ -163,9 +165,8 @@ public class GameController implements HighScoreListener, GameStateListener {
 		try {
 			fileSupport.writeHighScore(newHighScore);
 			highScoreText.setText(String.valueOf(newHighScore));
-			throw new IllegalArgumentException("test");
 		} catch (Throwable e) {
-			highScoreText.setText("Save error");
+			highScoreText.setText("Error");
 		}
 		
 	}
