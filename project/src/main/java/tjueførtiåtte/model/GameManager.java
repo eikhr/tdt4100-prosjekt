@@ -24,6 +24,21 @@ public class GameManager implements GameScoreListener {
 		game.addScoreListener(this);
 	}
 	
+	public void startLoadedGame(Game game) {
+		// remove old score listener from previous game
+		if (this.game != null) {
+			this.game.removeScoreListener(this);
+		}
+		
+		this.game = game;
+		
+		game.addScoreListener(this);
+	}
+
+	public Game getGame() {
+		return game;
+	}
+	
 	private void validateGame() {
 		if (game == null) throw new IllegalStateException("No game is started");
 	}

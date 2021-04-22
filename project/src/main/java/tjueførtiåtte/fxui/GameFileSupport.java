@@ -10,10 +10,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Scanner;
 
+import tjueførtiåtte.model.Game;
+
 public class GameFileSupport implements IGameFileReading {
 
-    public final static String FILE_EXTENSION = "2048hs";
-
+    public final static String HIGH_SCORE_FILE_EXTENSION = "2048hs";
+    public final static String SAVE_GAME_FILE_EXTENSION = "2048";
+    
     private Path getGameUserFolderPath() {
         return Path.of(System.getProperty("user.home"), "tdt4100", "tjuefortiatte");
     }
@@ -28,7 +31,11 @@ public class GameFileSupport implements IGameFileReading {
     }
 
     private Path getHighScorePath() {
-        return getGameUserFolderPath().resolve("highScore" + "." + FILE_EXTENSION);
+        return getGameUserFolderPath().resolve("highScore" + "." + HIGH_SCORE_FILE_EXTENSION);
+    }
+    
+    private Path getSaveGamePath() {
+        return getGameUserFolderPath().resolve("saveGame" + "." + SAVE_GAME_FILE_EXTENSION);
     }
 
     public Integer readHighScore(InputStream input) {
@@ -59,4 +66,38 @@ public class GameFileSupport implements IGameFileReading {
         	writeHighScore(highScore, output);
         }
     }
+
+	@Override
+	public Game readSaveGame(InputStream is) {
+		Game game = null;
+        try (var scanner = new Scanner(is)) {
+            String serializedGame = scanner.next();
+            game = new Game(serializedGame);
+        }
+        return game;
+	}
+
+	@Override
+	public Game readSaveGame() throws IOException {
+		var saveGamePath = getSaveGamePath();
+        try (var input = new FileInputStream(saveGamePath.toFile())) {
+            return readSaveGame(input);
+        }
+	}
+
+	@Override
+	public void writeSaveGame(Game game, OutputStream os) {
+		 try (var writer = new PrintWriter(os)) {
+            writer.println(game.serialize());
+        }
+	}
+
+	@Override
+	public void writeSaveGame(Game game) throws IOException {
+		var saveGamePath = getSaveGamePath();
+        ensureGameUserFolder();
+        try (var output = new FileOutputStream(saveGamePath.toFile())) {
+        	writeSaveGame(game, output);
+        }
+	}
 }

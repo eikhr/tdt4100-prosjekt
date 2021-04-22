@@ -15,6 +15,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import tjueførtiåtte.model.Direction;
+import tjueførtiåtte.model.Game;
 import tjueførtiåtte.model.GameManager;
 import tjueførtiåtte.model.GameState;
 import tjueførtiåtte.model.GameStateListener;
@@ -44,25 +45,47 @@ public class GameController implements HighScoreListener, GameStateListener {
 	@FXML
 	private void initialize() {
 		int highScore;
+		Game loadedGame;
 		try {
 			highScore = fileSupport.readHighScore();
 		} catch (Throwable e) {
 			highScore = 0;
+		}
+		try {
+			loadedGame = fileSupport.readSaveGame();
+		} catch (Throwable e) {
+			loadedGame = null;
 		}
 		
 		gameManager = new GameManager(highScore);
 		gameManager.addHighScoreListener(this);
 		highScoreUpdated(highScore);
 		resizedUI();
-		startNewGame();
+		
+		if (loadedGame != null) {
+			startLoadedGame(loadedGame);
+		} else {
+			startNewGame();
+		}
 		gamePane.requestFocus();
 	}
 	
+	private void startLoadedGame(Game game) {
+		gameManager.startLoadedGame(game);
+		gameManager.addGameStateListener(this);
+		updateUI();
+	}
+	
 	private void startNewGame() {
-		clearOverlay();
 		scoreUpdated(0);
 		gameManager.startNewGame();
 		gameManager.addGameStateListener(this);
+		updateUI();
+	}
+	
+	private void updateUI() {
+		stateUpdated(gameManager.getGame().getState());
+		scoreUpdated(gameManager.getGame().getScore());
 		tilesMoved(gameManager.getTiles());
 	}
 	
@@ -190,6 +213,12 @@ public class GameController implements HighScoreListener, GameStateListener {
 	public void tilesMoved(Collection<RenderableTile> updatedTiles) {
 		tiles = updatedTiles;
 		drawTiles(true);
+		
+		try {
+			fileSupport.writeSaveGame(gameManager.getGame());
+		} catch (Throwable a){
+			// TODO: notify user
+		}
 	}
 
 	@Override
