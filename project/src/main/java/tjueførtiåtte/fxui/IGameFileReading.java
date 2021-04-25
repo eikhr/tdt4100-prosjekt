@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import tjueførtiåtte.model.Game;
-import tjueførtiåtte.model.GameManager;
 
 public interface IGameFileReading {
 	/**

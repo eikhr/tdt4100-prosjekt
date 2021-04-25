@@ -70,6 +70,7 @@ public class GameManager implements GameScoreListener {
 		return game.getRenderableTiles();
 	}
 	
+	@Override
 	public void scoreUpdated(int newScore) {
 		if (newScore > highScore) {
 			updateHighScore(newScore);
@@ -95,14 +96,16 @@ public class GameManager implements GameScoreListener {
 		highScoreListeners.remove(listener);
 	}
 	
-	public void addGameStateListener(GameStateListener listener) {
+	public void addGameStateListener(GameStateListener listener) throws IllegalStateException {
 		validateGame();
 		
 		game.addGameStateListener(listener);
 	}
 	
 	public void removeGameStateListener(GameStateListener listener) {
-		validateGame();
+		if (getGame() == null) {
+			return;
+		}
 		
 		game.removeGameStateListener(listener);
 	}

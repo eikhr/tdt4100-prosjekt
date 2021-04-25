@@ -48,12 +48,12 @@ public class GameController implements HighScoreListener, GameStateListener {
 		Game loadedGame;
 		try {
 			highScore = fileSupport.readHighScore();
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			highScore = 0;
 		}
 		try {
 			loadedGame = fileSupport.readSaveGame();
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			loadedGame = null;
 		}
 		
