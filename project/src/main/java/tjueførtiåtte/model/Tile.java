@@ -1,19 +1,19 @@
 package tjueførtiåtte.model;
 
 public class Tile implements RenderableTile {
-	private int tier;
-	private int previousTier;
+	private int tier = 0;
+	private int previousTier = 0;
 	private Position position;
 	private Position previousPosition;
 	private boolean turnInProgress;
 	
-	public Tile(int tier) {
+	public Tile(int tier) throws IllegalArgumentException {
 		this.validateTier(tier);
 		this.tier = tier;
 		this.previousTier = 0;
 	}
 	
-	public Tile(String serialized) {
+	public Tile(String serialized) throws IllegalArgumentException {
 		try {
 			int tier = Integer.valueOf(serialized);
 			this.validateTier(tier);
@@ -24,7 +24,7 @@ public class Tile implements RenderableTile {
 		}
 	}
 	
-	private void validateTier(int tier) {
+	private void validateTier(int tier) throws IllegalArgumentException {
 		if (tier < 1) {
 			throw new IllegalArgumentException("Tile tier must be at least 1 (displays as 2)");
 		}
@@ -34,7 +34,7 @@ public class Tile implements RenderableTile {
 	 * Sets the current position of the tile on the board
 	 * @param Position position 
 	 */
-	public void setPosition(Position position) {
+	public void setPosition(Position position) throws IllegalStateException {
 		if (this.position != null && !turnInProgress) {
 			throw new IllegalStateException("Position can only be updated during a turn");
 		}
@@ -87,7 +87,7 @@ public class Tile implements RenderableTile {
 	}
 	
 	@Override
-	public Position getPosition() {
+	public Position getPosition() throws IllegalStateException {
 		if (turnInProgress) throw new IllegalStateException("Tile position is not accessible while a turn is in progress");
 		return position;
 	}
@@ -117,7 +117,7 @@ public class Tile implements RenderableTile {
 		return String.valueOf((int) Math.pow(2, getPreviousTier()));
 	}
 	
-	public static Tile[] reverseRow(Tile row[]) {
+	public static Tile[] reverseRow(Tile row[]) throws IllegalArgumentException {
 		if (row == null) throw new IllegalArgumentException("Cannot reverse null row");
 		
 		Tile newRow[] = new Tile[row.length];
@@ -129,7 +129,7 @@ public class Tile implements RenderableTile {
 		return newRow;
 	}
 	
-	public static boolean areEqualRows(Tile line1[], Tile line2[]) {
+	public static boolean areEqualRows(Tile line1[], Tile line2[]) throws IllegalArgumentException {
 		if (line1 == null || line2 == null) throw new IllegalArgumentException("Cannot compare null rows");
 		if (line1.length != line2.length) throw new IllegalArgumentException("Cannot compare rows of different length");
 		
@@ -148,7 +148,7 @@ public class Tile implements RenderableTile {
 		return true;
 	}
 	
-	public String serialize() {
+	public String serialize() throws IllegalStateException {
 		if (turnInProgress) throw new IllegalStateException("Cannot serialize during a turn");
 		
 		return String.valueOf(tier);

@@ -13,7 +13,7 @@ public class GhostTile implements RenderableTile {
 	
 	private int previousTier;
 	
-	public GhostTile(Tile tile, Tile mergedInto) {
+	public GhostTile(Tile tile, Tile mergedInto) throws IllegalArgumentException {
 		validateTile(tile);
 		validateTile(mergedInto);
 		
@@ -22,12 +22,12 @@ public class GhostTile implements RenderableTile {
 		previousTier = tile.getPreviousTier();
 	}
 	
-	private void validateTile(Tile tile) {
+	private void validateTile(Tile tile) throws IllegalArgumentException {
 		if (tile == null) throw new IllegalArgumentException("Both the tile, and the tile that is merged into must not be null");
 	}
 	
 	@Override
-	public Position getPosition() {
+	public Position getPosition() throws IllegalStateException {
 		return mergedInto.getPosition();
 	}
 

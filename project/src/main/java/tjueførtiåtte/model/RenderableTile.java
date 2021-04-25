@@ -5,7 +5,7 @@ public interface RenderableTile {
 	 * Gets the position of the tile.
 	 * @return The Coordinates for the tile's position.
 	 */
-	public Position getPosition();
+	public Position getPosition() throws IllegalStateException;
 
 	/**
 	 * Gets the position where the tile was the previous turn.

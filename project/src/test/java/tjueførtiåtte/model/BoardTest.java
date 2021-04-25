@@ -74,7 +74,7 @@ public class BoardTest {
 	@Test
 	@DisplayName("Sjekk at BoardIterator gir riktige tiles i rigtig rekkefølge")
 	public void testBoardIterator() {
-		Iterator<Tile> iterator = board.getIterator();
+		Iterator<Tile> iterator = board.iterator();
 		
 		int numberOfTiles = 0;
 		

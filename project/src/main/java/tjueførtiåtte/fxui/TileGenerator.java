@@ -13,7 +13,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 import tjueførtiåtte.model.Position;
-import tjueførtiåtte.model.Game;
 import tjueførtiåtte.model.RenderableTile;
 
 public class TileGenerator {

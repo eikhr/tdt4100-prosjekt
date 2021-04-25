@@ -22,11 +22,22 @@ public class Game {
 		fireTilesMoved();
 	}
 	
-	public Game(String serialized) {
+	public Game(String serialized) throws IllegalArgumentException {
 		String[] parts = serialized.split(";");
-		score = Integer.valueOf(parts[1]);
+		
+		try {
+			score = Integer.valueOf(parts[1]);
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException("Invalid score format in serialized string", e);
+		}
+		
  		board = new Board(parts[2]);
- 		state = GameState.valueOf(parts[0]);
+ 		
+ 		try {
+ 			state = GameState.valueOf(parts[0]);
+ 		} catch (Exception e) {
+			throw new IllegalArgumentException("Invalid GameState format in serialized string", e);
+ 		}
 	}
 	
 	public GameState getState() {
@@ -65,11 +76,12 @@ public class Game {
 	}
 	
 	// Executes a move in the given direction
-	public void move(Direction direction) {
-		ghostTiles.clear();
+	public void move(Direction direction) throws IllegalStateException {
 		if (state != GameState.ONGOING && state != GameState.CONTINUED) {
 			throw new IllegalStateException("Cannot move while game state is not ongoing or continued");
 		}
+		
+		ghostTiles.clear();
 		
 		for (Tile tile : board.getTiles()) {
 			tile.startNewTurn();
@@ -153,7 +165,7 @@ public class Game {
 	}
 	
 	// continue the game after having won
-	public void continueGame() {
+	public void continueGame() throws IllegalStateException {
 		if (state != GameState.WON) {
 			throw new IllegalStateException("Cannot continue a game that is not in 'WON' state");
 		}
@@ -175,6 +187,9 @@ public class Game {
 		return true;
 	}
 	
+	/*
+	 * Checks all pairs of neighbouring tiles and return whether or not any of them can merge together
+	 */
 	private boolean neighborsCanMerge() {
 		// horizontally
 		for (int x = 0; x < board.getWidth()-1; x++) {
@@ -196,7 +211,7 @@ public class Game {
 	}
 	
 	// moves line to beginning of list, and merges any mergeable tiles, adds removed tiles to gostTiles
-	private Tile[] moveLine(Tile[] line, boolean reverse) {
+	private Tile[] moveLine(Tile[] line, boolean reverse) throws IllegalArgumentException {
 		if (reverse)
 			line = Tile.reverseRow(line);
 		
@@ -238,7 +253,7 @@ public class Game {
 	}
 
 	// adds a random tile in a random empty spot
-	private void addRandomTile() {
+	private void addRandomTile() throws IllegalStateException {
 		List<Position> emptyPositions = board.getEmptyPositions();
 		
 		if (emptyPositions.isEmpty()) {
@@ -254,7 +269,7 @@ public class Game {
 	}
 	
 	// adds a random tile in the specified location (either a 2 or a 4)
-	private void addRandomTile(Position position) {
+	private void addRandomTile(Position position) throws IllegalArgumentException {
 		Random random = new Random();
 		if (random.nextInt(5) == 0) {
 			board.addTile(position, new Tile( 2));
@@ -263,8 +278,9 @@ public class Game {
 		}
 	}
 	
+	@Override
 	public String toString() {
-		return board.toString();
+		return String.format("Game in state %s, with score %d\n", getState(), getScore())+board.toString();
 	}
 	
 	private void fireScoreUpdated() {

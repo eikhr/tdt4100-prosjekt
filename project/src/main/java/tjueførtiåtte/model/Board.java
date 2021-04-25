@@ -17,10 +17,19 @@ public class Board {
 		this.width = width;
 	}
 	
-	public Board(String serialized) {
+	public Board(String serialized) throws IllegalArgumentException {
 		String[] array = serialized.split(",");
-		width = Integer.valueOf(array[0]);
-		height = Integer.valueOf(array[1]);
+		
+		try {
+			width = Integer.valueOf(array[0]);
+			height = Integer.valueOf(array[1]);
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException("Serialized string contained invalid width and/or height", e);
+		}
+		
+		if (array.length != height * width + 2) {
+			throw new IllegalArgumentException("Serialized string contained wrong amount of numbers");
+		}
 		
 		tiles = new Tile[height][width];
 		
@@ -29,7 +38,12 @@ public class Board {
 			int y = (i-2) / width;
 			
 			if (!array[i].equals("-")) {
-				tiles[y][x] = new Tile(array[i]);
+				try {
+					tiles[y][x] = new Tile(array[i]);
+				} catch (IllegalArgumentException e) {
+					throw new IllegalArgumentException("Invalid tile value in serialized string", e);
+				}
+				
 				tiles[y][x].setPosition(new Position(this, x, y));
 			}
 		}
@@ -39,15 +53,15 @@ public class Board {
 	 * Gets the Tile at the specified coordinates
 	 * MAY BE NULL
 	 */
-	public Tile getTile(int x, int y) {
+	public Tile getTile(int x, int y) throws IllegalArgumentException {
 		return getTile(createPosition(x, y));
 	}
 	
-	private Position createPosition(int x, int y) {
+	private Position createPosition(int x, int y) throws IllegalArgumentException {
 		try {
 			return new Position(this, x, y);
 		} catch (IllegalArgumentException e) {
-			throw new IllegalArgumentException("The coordinates do not correspond to a valid board position.");
+			throw new IllegalArgumentException("The coordinates do not correspond to a valid board position.", e);
 		}
 	}
 	
@@ -59,14 +73,14 @@ public class Board {
 		return tiles[position.getY()][position.getX()];
 	}
 	
-	public Iterator<Tile> getIterator() {
+	public Iterator<Tile> iterator() {
 		return new BoardIterator(this);
 	}
 	
 	public Collection<Tile> getTiles() {
 		Collection<Tile> tiles = new ArrayList<Tile>();
 
-		getIterator().forEachRemaining(tiles::add);
+		iterator().forEachRemaining(tiles::add);
 		
 		tiles.removeIf(Objects::isNull);
 		
@@ -74,7 +88,7 @@ public class Board {
 	}
 	
 	public Tile getBestTile() {
-		Iterator<Tile> iterator = getIterator(); 
+		Iterator<Tile> iterator = iterator(); 
 		
 		Tile best = null;
 		
@@ -88,13 +102,13 @@ public class Board {
 		return best;
 	}
 	
-	public Tile[] getRow(int y) {
+	public Tile[] getRow(int y) throws IllegalArgumentException {
 		validateRowIndex(y);
 		
 		return tiles[y];
 	}
 	
-	public void setRow(int y, Tile[] row) {
+	public void setRow(int y, Tile[] row) throws IllegalArgumentException {
 		validateRowIndex(y);
 		
 		for (int i = 0; i < row.length; i++) {
@@ -106,7 +120,7 @@ public class Board {
 		}
 	}
 	
-	public Tile[] getCol(int x) {
+	public Tile[] getCol(int x) throws IllegalArgumentException {
 		validateColumnIndex(x);
 		
 		Tile col[] = new Tile[getHeight()];
@@ -116,7 +130,7 @@ public class Board {
 		return col;
 	}
 	
-	public void setCol(int x, Tile[] col) {
+	public void setCol(int x, Tile[] col) throws IllegalArgumentException {
 		validateColumnIndex(x);
 		
 		for (int i = 0; i < col.length; i++) {
@@ -128,13 +142,13 @@ public class Board {
 		}
 	}
 	
-	private void validateRowIndex(int index) {
+	private void validateRowIndex(int index) throws IllegalArgumentException {
 		if (index < 0 || index >= getHeight()) {
 			throw new IllegalArgumentException("Row "+index+" doesn't exist on the board");
 		}
 	}
 	
-	private void validateColumnIndex(int index) {
+	private void validateColumnIndex(int index) throws IllegalArgumentException {
 		if (index < 0 || index >= getWidth()) {
 			throw new IllegalArgumentException("Column "+index+" doesn't exist on the board");
 		}
@@ -161,14 +175,14 @@ public class Board {
 		return height;
 	}
 	
-	public void addTile(Position position, Tile tile) {
+	public void addTile(Position position, Tile tile) throws IllegalArgumentException {
 		if (!isEmptyTile(position)) {
 			throw new IllegalArgumentException("Cannot add tile in occupied location");
 		}
 		setTile(position, tile);
 	}
 	
-	public void removeTile(Position position) {
+	public void removeTile(Position position) throws IllegalArgumentException {
 		if (isEmptyTile(position)) {
 			throw new IllegalStateException("Cannot remove tile that doesn't exist");
 		}
@@ -176,12 +190,12 @@ public class Board {
 		tiles[position.getY()][position.getX()] = null;
 	}
 	
-	public void removeTile(Tile tile) {
+	public void removeTile(Tile tile) throws IllegalArgumentException {
 		removeTile(tile.getPosition());
 	}
 	
 	public int getNumberOfTiles() {
-		Iterator<Tile> iterator = getIterator(); 
+		Iterator<Tile> iterator = iterator(); 
 		
 		int number = 0;
 		
@@ -217,10 +231,10 @@ public class Board {
 	 * Serializes the board in the following format:
 	 * {board width},{board height},{tile in row 0 col 0},{tile in row 0 col 1}, ... ,{tile in row 1 col 0}, ...
 	 */
-	public String serialize() {
+	public String serialize() throws IllegalStateException {
 		String serialized = String.format("%d,%d", width, height);
 		
-		Iterator<Tile> iterator = getIterator();
+		Iterator<Tile> iterator = iterator();
 		while (iterator.hasNext()) {
 			Tile tile = iterator.next();
 			if (tile != null) {
@@ -233,6 +247,7 @@ public class Board {
 		return serialized;
 	}
 	
+	@Override
 	public String toString() {
 		String result = "---------------------\n";
 		for (Tile[] row : tiles) {

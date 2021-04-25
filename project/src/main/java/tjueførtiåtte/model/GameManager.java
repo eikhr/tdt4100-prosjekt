@@ -32,34 +32,30 @@ public class GameManager implements GameScoreListener {
 		
 		this.game = game;
 		
-		game.addScoreListener(this);
+		this.game.addScoreListener(this);
 	}
 
 	public Game getGame() {
 		return game;
 	}
 	
-	private void validateGame() {
+	private void validateGame() throws IllegalStateException {
 		if (game == null) throw new IllegalStateException("No game is started");
 	}
 
-	public void continueGame() {
+	public void continueGame() throws IllegalStateException {
 		validateGame();
 		
 		game.continueGame();
 	}
 	
-	public void move(Direction direction) {
+	public void move(Direction direction) throws IllegalStateException {
 		validateGame();
-		
-		if (game.getState() != GameState.ONGOING && game.getState() != GameState.CONTINUED) {
-			throw new IllegalStateException("You can only move while the game is ongoing");
-		}
 		
 		game.move(direction);
 	}
 	
-	public Collection<RenderableTile> getTiles() {
+	public Collection<RenderableTile> getTiles() throws IllegalStateException {
 		validateGame();
 		
 		return game.getRenderableTiles();
