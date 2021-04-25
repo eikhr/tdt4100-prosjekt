@@ -3,6 +3,7 @@ package tjueførtiåtte.fxui;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -14,6 +15,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 import tjueførtiåtte.model.Direction;
 import tjueførtiåtte.model.Game;
 import tjueførtiåtte.model.GameManager;
@@ -26,6 +28,8 @@ public class GameController implements HighScoreListener, GameStateListener {
 	private GameManager gameManager;
 	
 	@FXML Pane gamePane;
+
+	@FXML Pane moveError;
 	
 	@FXML GridPane overlayPane;
 	
@@ -126,8 +130,19 @@ public class GameController implements HighScoreListener, GameStateListener {
 	}
 	
 	private void doMove(KeyEvent keyEvt, Direction direction) {
-		gameManager.move(direction);
-		// TODO: handle exception
+		if (gameManager.getGame() == null) {
+			return;
+		}
+		
+		try {
+			gameManager.move(direction);
+		} catch (IllegalStateException e) {
+			FadeTransition ft = new FadeTransition(Duration.millis(2000), moveError);
+			ft.setFromValue(1);
+			ft.setToValue(0);
+			ft.play();
+		}
+		
 		keyEvt.consume();
 	}
 	
