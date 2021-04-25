@@ -49,12 +49,21 @@ public class GameManager implements GameScoreListener {
 		game.continueGame();
 	}
 	
+	/*
+	 * Does a move in the direction specified. If no tiles can move in the specified direction, nothing happens
+	 * @param direction The direction to move
+	 * @throws IllegalStateException If no game is running or the game is in a paused state
+	 */
 	public void move(Direction direction) throws IllegalStateException {
 		validateGame();
 		
 		game.move(direction);
 	}
-	
+
+	/*
+	 * Gets all the tiles from the board as objects implementing RenderableTile
+	 * @throws IllegalStateException If no game is running
+	 */
 	public Collection<RenderableTile> getTiles() throws IllegalStateException {
 		validateGame();
 		
