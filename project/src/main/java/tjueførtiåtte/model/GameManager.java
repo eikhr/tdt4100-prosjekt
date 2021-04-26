@@ -3,11 +3,11 @@ package tjueførtiåtte.model;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class GameManager implements GameScoreListener {
+public class GameManager implements IGameScoreListener {
 	private int highScore;
 	private Game game;
 	
-	private Collection<HighScoreListener> highScoreListeners = new ArrayList<HighScoreListener>();
+	private Collection<IHighScoreListener> highScoreListeners = new ArrayList<IHighScoreListener>();
 	
 	public GameManager(int loadedHighScore) {
 		highScore = loadedHighScore;
@@ -64,7 +64,7 @@ public class GameManager implements GameScoreListener {
 	 * Gets all the tiles from the board as objects implementing RenderableTile
 	 * @throws IllegalStateException If no game is running
 	 */
-	public Collection<RenderableTile> getTiles() throws IllegalStateException {
+	public Collection<IRenderableTile> getTiles() throws IllegalStateException {
 		validateGame();
 		
 		return game.getRenderableTiles();
@@ -83,26 +83,26 @@ public class GameManager implements GameScoreListener {
 	}
 	
 	private void fireHighScoreUpdated(int newHighScore) {
-		for(HighScoreListener listener : highScoreListeners) {
+		for(IHighScoreListener listener : highScoreListeners) {
 			listener.highScoreUpdated(newHighScore);
 		}
 	}
 	
-	public void addHighScoreListener(HighScoreListener listener) {
+	public void addHighScoreListener(IHighScoreListener listener) {
 		highScoreListeners.add(listener);
 	}
 	
-	public void removeHighScoreListener(HighScoreListener listener) {
+	public void removeHighScoreListener(IHighScoreListener listener) {
 		highScoreListeners.remove(listener);
 	}
 	
-	public void addGameStateListener(GameStateListener listener) throws IllegalStateException {
+	public void addGameStateListener(IGameStateListener listener) throws IllegalStateException {
 		validateGame();
 		
 		game.addGameStateListener(listener);
 	}
 	
-	public void removeGameStateListener(GameStateListener listener) {
+	public void removeGameStateListener(IGameStateListener listener) {
 		if (getGame() == null) {
 			return;
 		}

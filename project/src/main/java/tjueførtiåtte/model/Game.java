@@ -10,8 +10,8 @@ public class Game {
 	private final Board board;
 	private int score = 0;
 	private List<GhostTile> ghostTiles = new ArrayList<GhostTile>();
-	private List<GameScoreListener> scoreListeners = new ArrayList<GameScoreListener>();
-	private List<GameStateListener> gameStateListeners = new ArrayList<GameStateListener>();
+	private List<IGameScoreListener> scoreListeners = new ArrayList<IGameScoreListener>();
+	private List<IGameStateListener> gameStateListeners = new ArrayList<IGameStateListener>();
 	
 	public Game() {		
 		board = new Board(4,4);
@@ -68,8 +68,8 @@ public class Game {
 		return board.getTiles();
 	}
 	
-	public Collection<RenderableTile> getRenderableTiles() {
-		Collection<RenderableTile> tiles = new ArrayList<RenderableTile>();
+	public Collection<IRenderableTile> getRenderableTiles() {
+		Collection<IRenderableTile> tiles = new ArrayList<IRenderableTile>();
 		tiles.addAll(board.getTiles());
 		tiles.addAll(getGhostTiles());
 		return tiles;
@@ -284,39 +284,39 @@ public class Game {
 	}
 	
 	private void fireScoreUpdated() {
-		for (GameScoreListener listener : scoreListeners) {
+		for (IGameScoreListener listener : scoreListeners) {
 			listener.scoreUpdated(getScore());
 		}
-		for (GameStateListener listener : gameStateListeners) {
+		for (IGameStateListener listener : gameStateListeners) {
 			listener.scoreUpdated(getScore());
 		}
 	}
 	
-	public void addScoreListener(GameScoreListener listener) {
+	public void addScoreListener(IGameScoreListener listener) {
 		scoreListeners.add(listener);
 	}
 	
-	public void removeScoreListener(GameScoreListener listener) {
+	public void removeScoreListener(IGameScoreListener listener) {
 		scoreListeners.remove(listener);
 	}
 	
 	private void fireGameStateUpdated() {
-		for (GameStateListener listener : gameStateListeners) {
+		for (IGameStateListener listener : gameStateListeners) {
 			listener.stateUpdated(getState());
 		}
 	}
 
 	private void fireTilesMoved() {
-		for (GameStateListener listener : gameStateListeners) {
+		for (IGameStateListener listener : gameStateListeners) {
 			listener.tilesMoved(getRenderableTiles());
 		}
 	}
 	
-	public void addGameStateListener(GameStateListener listener) {
+	public void addGameStateListener(IGameStateListener listener) {
 		gameStateListeners.add(listener);
 	}
 
-	public void removeGameStateListener(GameStateListener listener) {
+	public void removeGameStateListener(IGameStateListener listener) {
 		gameStateListeners.remove(listener);
 	}
 	

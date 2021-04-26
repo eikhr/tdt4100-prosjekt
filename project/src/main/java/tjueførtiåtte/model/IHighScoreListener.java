@@ -1,5 +1,5 @@
 package tjueførtiåtte.model;
 
-public interface HighScoreListener {
+public interface IHighScoreListener {
 	public void highScoreUpdated(int newHighScore);
 }

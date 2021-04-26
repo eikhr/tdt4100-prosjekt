@@ -13,7 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 import tjueførtiåtte.model.Position;
-import tjueførtiåtte.model.RenderableTile;
+import tjueførtiåtte.model.IRenderableTile;
 
 public class TileNodeGenerator {
 	private static String tileColors[] = new String[] {
@@ -55,11 +55,11 @@ public class TileNodeGenerator {
 		return backgroundTiles;
 	}
 	
-	public Collection<Node> generateTileNodes(Collection<RenderableTile> tiles, boolean animate) {		
+	public Collection<Node> generateTileNodes(Collection<IRenderableTile> tiles, boolean animate) {		
 		Collection<Node> nodes = new ArrayList<Node>();
 				
 		// create all tile nodes
-		for (RenderableTile tile : tiles) {
+		for (IRenderableTile tile : tiles) {
 			nodes.add(generateTileNode(tile, tileSize, animate));
 		}
 		
@@ -102,7 +102,7 @@ public class TileNodeGenerator {
 		return tile;
 	}
 	
-	private Label generateTileNode(RenderableTile tile, double size, boolean animate) {
+	private Label generateTileNode(IRenderableTile tile, double size, boolean animate) {
 		Position position = tile.getPosition();
 		Position previousPosition = tile.getPreviousPosition();
 		

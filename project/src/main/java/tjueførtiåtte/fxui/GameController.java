@@ -20,11 +20,11 @@ import tjueførtiåtte.model.Direction;
 import tjueførtiåtte.model.Game;
 import tjueførtiåtte.model.GameManager;
 import tjueførtiåtte.model.GameState;
-import tjueførtiåtte.model.GameStateListener;
-import tjueførtiåtte.model.HighScoreListener;
-import tjueførtiåtte.model.RenderableTile;
+import tjueførtiåtte.model.IGameStateListener;
+import tjueførtiåtte.model.IHighScoreListener;
+import tjueførtiåtte.model.IRenderableTile;
 
-public class GameController implements HighScoreListener, GameStateListener {
+public class GameController implements IHighScoreListener, IGameStateListener {
 	private GameManager gameManager;
 	
 	@FXML Pane gamePane;
@@ -41,7 +41,7 @@ public class GameController implements HighScoreListener, GameStateListener {
 	
 	private TileNodeGenerator tileGenerator;
 	
-	private Collection<RenderableTile> tiles = new ArrayList<RenderableTile>();
+	private Collection<IRenderableTile> tiles = new ArrayList<IRenderableTile>();
 	
 	private static int gameWidth = 4;
 	private static int gameHeight = 4;
@@ -225,7 +225,7 @@ public class GameController implements HighScoreListener, GameStateListener {
 	}
 
 	@Override
-	public void tilesMoved(Collection<RenderableTile> updatedTiles) {
+	public void tilesMoved(Collection<IRenderableTile> updatedTiles) {
 		tiles = updatedTiles;
 		drawTiles(true);
 		

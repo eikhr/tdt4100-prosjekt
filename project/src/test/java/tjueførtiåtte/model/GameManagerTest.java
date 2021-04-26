@@ -18,7 +18,7 @@ public class GameManagerTest {
 
 	int observedScore;
 	GameState observedGameState;
-	Collection<RenderableTile> observedTiles;
+	Collection<IRenderableTile> observedTiles;
 	int observedHighScore;
 
 	@BeforeEach
@@ -33,13 +33,13 @@ public class GameManagerTest {
 	@Test
 	@DisplayName("Sjekk at new game fungerer")
 	public void testNewGame() {
-		GameStateListener listener = new GameStateListener() {
+		IGameStateListener listener = new IGameStateListener() {
 			@Override
 			public void scoreUpdated(int newScore) {}
 			@Override
 			public void stateUpdated(GameState newState) {}
 			@Override
-			public void tilesMoved(Collection<RenderableTile> tiles) {
+			public void tilesMoved(Collection<IRenderableTile> tiles) {
 				assertTrue(false); // Burde aldri skje, fordi det er et nytt Game-objekt som skal flytte
 			}
 		};
@@ -60,13 +60,13 @@ public class GameManagerTest {
 	@DisplayName("Sjekk at unntak blir kastet dersom det ikke er startet et spill")
 	public void testNoGameExceptions() {
 		assertThrows(IllegalStateException.class, () -> manager.move(Direction.UP));
-		assertThrows(IllegalStateException.class, () -> manager.addGameStateListener(new GameStateListener() {
+		assertThrows(IllegalStateException.class, () -> manager.addGameStateListener(new IGameStateListener() {
 				@Override
 				public void scoreUpdated(int newScore) {}
 				@Override
 				public void stateUpdated(GameState newState) {}
 				@Override
-				public void tilesMoved(Collection<RenderableTile> tiles) {}
+				public void tilesMoved(Collection<IRenderableTile> tiles) {}
 			}));
 		assertThrows(IllegalStateException.class, () -> manager.continueGame());
 		assertThrows(IllegalStateException.class, () -> manager.getTiles());
@@ -75,7 +75,7 @@ public class GameManagerTest {
 	@Test
 	@DisplayName("Sjekk at lytter for high scores fungerer som den skal")
 	public void testUpdateHighScoreListener() {
-		HighScoreListener listener = (int score) -> observedHighScore = score;
+		IHighScoreListener listener = (int score) -> observedHighScore = score;
 		manager.addHighScoreListener(listener);
 		
 		manager.scoreUpdated(50);
@@ -92,7 +92,7 @@ public class GameManagerTest {
 	@Test
 	@DisplayName("Sjekk at lytter for game state fungerer som den skal")
 	public void testAddGameStateListener() {
-		GameStateListener listener = new GameStateListener() {
+		IGameStateListener listener = new IGameStateListener() {
 			@Override
 			public void scoreUpdated(int newScore) {
 				observedScore = newScore;
@@ -102,7 +102,7 @@ public class GameManagerTest {
 				observedGameState = newState;
 			}
 			@Override
-			public void tilesMoved(Collection<RenderableTile> tiles) {
+			public void tilesMoved(Collection<IRenderableTile> tiles) {
 				observedTiles = tiles;
 			}
 		};

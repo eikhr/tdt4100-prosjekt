@@ -1,6 +1,6 @@
 package tjueførtiåtte.model;
 
-public interface RenderableTile {
+public interface IRenderableTile {
 	/**
 	 * Gets the position of the tile.
 	 * @return The Coordinates for the tile's position.

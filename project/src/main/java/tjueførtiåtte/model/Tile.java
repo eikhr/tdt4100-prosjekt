@@ -1,6 +1,6 @@
 package tjueførtiåtte.model;
 
-public class Tile implements RenderableTile {
+public class Tile implements IRenderableTile {
 	private int tier = 0;
 	private int previousTier = 0;
 	private Position position;

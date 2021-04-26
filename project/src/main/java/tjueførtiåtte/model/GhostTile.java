@@ -6,7 +6,7 @@ package tjueførtiåtte.model;
  * Should act exactly the same as a real tile that has gotten a tile merged into it. 
  * (there should be no way for something using the RenderableTile interface to tell what tile is the real or ghost)
  */
-public class GhostTile implements RenderableTile {
+public class GhostTile implements IRenderableTile {
 	private final Tile mergedInto;
 	
 	private final Position previousPosition;
