@@ -1,9 +1,9 @@
 package tjueførtiåtte.model;
 
 public class Position {
-	private int x;
-	private int y;
-	private Board board;
+	private final int x;
+	private final int y;
+	private final Board board;
 	
 	public Position(Board board, int x, int y) throws IllegalArgumentException {
 		validateBoard(board);

@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class Game {
 	private GameState state = GameState.ONGOING;
-	private Board board;
+	private final Board board;
 	private int score = 0;
 	private List<GhostTile> ghostTiles = new ArrayList<GhostTile>();
 	private List<GameScoreListener> scoreListeners = new ArrayList<GameScoreListener>();

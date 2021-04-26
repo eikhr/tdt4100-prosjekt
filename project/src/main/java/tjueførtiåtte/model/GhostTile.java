@@ -7,11 +7,11 @@ package tjueførtiåtte.model;
  * (there should be no way for something using the RenderableTile interface to tell what tile is the real or ghost)
  */
 public class GhostTile implements RenderableTile {
-	private Tile mergedInto;
+	private final Tile mergedInto;
 	
-	private Position previousPosition;
+	private final Position previousPosition;
 	
-	private int previousTier;
+	private final int previousTier;
 	
 	public GhostTile(Tile tile, Tile mergedInto) throws IllegalArgumentException {
 		validateTile(tile);

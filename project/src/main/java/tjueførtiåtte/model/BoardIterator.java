@@ -3,7 +3,7 @@ package tjueførtiåtte.model;
 import java.util.Iterator;
 
 public class BoardIterator implements Iterator<Tile> {
-	private Board board;
+	private final Board board;
 	private int index = 0;
 	
 	public BoardIterator(Board board) {

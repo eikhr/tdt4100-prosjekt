@@ -8,8 +8,8 @@ import java.util.Objects;
 
 public class Board {
 	private Tile[][] tiles;
-	private int height;
-	private int width;
+	private final int height;
+	private final int width;
 	
 	public Board(int height, int width) {
 		tiles = new Tile[height][width];
