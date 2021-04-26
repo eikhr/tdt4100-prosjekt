@@ -268,7 +268,6 @@ public class BoardTest {
 	public void testSerialization() {
 		String serialized = board.serialize();
 		
-		System.out.println(serialized);
 		Board newBoard = new Board(serialized);
 		
 		assertEquals(board.getWidth(), newBoard.getWidth());
