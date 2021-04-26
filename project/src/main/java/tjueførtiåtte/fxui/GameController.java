@@ -155,7 +155,7 @@ public class GameController implements HighScoreListener, GameStateListener {
 		tileGenerator = new TileGenerator(gameWidth, gameHeight, gamePane.getWidth(), gamePane.getHeight());
 		drawTiles(false);
 	}
-	
+	 
 	// add overlay, either won or lost
 	private void addOverlay(boolean won) {
 		overlayPane.getChildren().clear();
