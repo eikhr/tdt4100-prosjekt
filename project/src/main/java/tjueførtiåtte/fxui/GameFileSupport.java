@@ -38,7 +38,7 @@ public class GameFileSupport implements IGameFileReading {
         return getGameUserFolderPath().resolve("saveGame" + "." + SAVE_GAME_FILE_EXTENSION);
     }
 
-    public Integer readHighScore(InputStream input) {
+    private Integer readHighScore(InputStream input) {
         Integer highScore = null;
         try (var scanner = new Scanner(input)) {
             highScore = scanner.nextInt();
@@ -46,6 +46,7 @@ public class GameFileSupport implements IGameFileReading {
         return highScore;
     }
 
+    @Override
     public Integer readHighScore() throws IOException {
         var highScorePath = getHighScorePath();
         try (var input = new FileInputStream(highScorePath.toFile())) {
@@ -53,12 +54,13 @@ public class GameFileSupport implements IGameFileReading {
         }
     }
 
-    public void writeHighScore(Integer highScore, OutputStream output) {
+    private void writeHighScore(Integer highScore, OutputStream output) {
         try (var writer = new PrintWriter(output)) {
             writer.println(highScore);
         }
     }
-
+    
+    @Override
     public void writeHighScore(Integer highScore) throws IOException {
         var highScorePath = getHighScorePath();
         ensureGameUserFolder();
@@ -67,8 +69,7 @@ public class GameFileSupport implements IGameFileReading {
         }
     }
 
-	@Override
-	public Game readSaveGame(InputStream is) {
+	private Game readSaveGame(InputStream is) {
 		Game game = null;
         try (var scanner = new Scanner(is)) {
             String serializedGame = scanner.next();
@@ -85,8 +86,7 @@ public class GameFileSupport implements IGameFileReading {
         }
 	}
 
-	@Override
-	public void writeSaveGame(Game game, OutputStream os) {
+	private void writeSaveGame(Game game, OutputStream os) {
 		 try (var writer = new PrintWriter(os)) {
             writer.println(game.serialize());
         }
