@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 import tjueførtiåtte.model.Game;
 
-public class GameFileSupport implements IGameFileReading {
+public class GameFileSupport implements IGameFileSupport {
 
     public final static String HIGH_SCORE_FILE_EXTENSION = "2048hs";
     public final static String SAVE_GAME_FILE_EXTENSION = "2048";

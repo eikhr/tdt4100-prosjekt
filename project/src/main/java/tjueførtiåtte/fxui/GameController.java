@@ -37,7 +37,7 @@ public class GameController implements HighScoreListener, GameStateListener {
 	
 	@FXML Label highScoreText;
 	
-	private final IGameFileReading fileSupport = new GameFileSupport();
+	private final IGameFileSupport fileSupport = new GameFileSupport();
 	
 	private TileGenerator tileGenerator;
 	

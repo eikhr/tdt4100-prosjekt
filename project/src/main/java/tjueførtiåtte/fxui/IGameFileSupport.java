@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import tjueførtiåtte.model.Game;
 
-public interface IGameFileReading {
+public interface IGameFileSupport {
 	/**
 	 * Read a high score, from a default (implementation-specific) location.
 	 * @return The high score
