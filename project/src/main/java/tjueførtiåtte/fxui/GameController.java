@@ -39,7 +39,7 @@ public class GameController implements HighScoreListener, GameStateListener {
 	
 	private final IGameFileSupport fileSupport = new GameFileSupport();
 	
-	private TileGenerator tileGenerator;
+	private TileNodeGenerator tileGenerator;
 	
 	private Collection<RenderableTile> tiles = new ArrayList<RenderableTile>();
 	
@@ -152,7 +152,7 @@ public class GameController implements HighScoreListener, GameStateListener {
 	}
 	
 	public void resizedUI() {
-		tileGenerator = new TileGenerator(gameWidth, gameHeight, gamePane.getWidth(), gamePane.getHeight());
+		tileGenerator = new TileNodeGenerator(gameWidth, gameHeight, gamePane.getWidth(), gamePane.getHeight());
 		drawTiles(false);
 	}
 	 

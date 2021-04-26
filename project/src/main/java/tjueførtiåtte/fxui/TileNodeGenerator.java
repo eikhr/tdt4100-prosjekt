@@ -15,7 +15,7 @@ import javafx.util.Duration;
 import tjueførtiåtte.model.Position;
 import tjueførtiåtte.model.RenderableTile;
 
-public class TileGenerator {
+public class TileNodeGenerator {
 	private static String tileColors[] = new String[] {
 		"#000000",
 		"#eee4da",
@@ -34,17 +34,17 @@ public class TileGenerator {
 		"#171b70"
 	};
 	
-	private int gameWidth;
-	private int gameHeight;
+	private int gameColumns;
+	private int gameRows;
 	private double containerWidth;
 	private double containerHeight;
 	private double tileSize;
 	private Collection<Node> backgroundTiles;
 	private static double padding = 10;
 	
-	public TileGenerator(int gameWidth, int gameHeight, double containerWidth, double containerHeight) {
-		this.gameHeight = gameHeight;
-		this.gameWidth = gameWidth;
+	public TileNodeGenerator(int gameColumns, int gameRows, double containerWidth, double containerHeight) {
+		this.gameRows = gameRows;
+		this.gameColumns = gameColumns;
 		this.containerWidth = containerWidth;
 		this.containerHeight = containerHeight;
 		this.tileSize = getTileSize();
@@ -67,11 +67,11 @@ public class TileGenerator {
 	}
 	
 	private double getTileSize() {
-		double usableWidth = containerWidth - padding*(gameWidth+1);
-		double usableHeight = containerHeight - padding*(gameHeight+1);
+		double usableWidth = containerWidth - padding*(gameColumns+1);
+		double usableHeight = containerHeight - padding*(gameRows+1);
 		
-		double tileWidth = usableWidth / gameWidth;
-		double tileHeight = usableHeight / gameHeight;
+		double tileWidth = usableWidth / gameColumns;
+		double tileHeight = usableHeight / gameRows;
 		
 		return Math.min(tileWidth, tileHeight);
 	}
@@ -79,8 +79,8 @@ public class TileGenerator {
 	private Collection<Node> generateBackgroundTiles() {
 		Collection<Node> backgroundTiles = new ArrayList<Node>();
 		
-		for (int x = 0; x < gameWidth; x++) {
-			for (int y = 0; y < gameHeight; y++) {
+		for (int x = 0; x < gameColumns; x++) {
+			for (int y = 0; y < gameRows; y++) {
 				double xPos = (x+1)*padding + x*tileSize;
 				double yPos = (y+1)*padding + y*tileSize;			
 				
